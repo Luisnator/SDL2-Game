@@ -1,4 +1,4 @@
 title: "SD2 Documentation"
-remote_theme: pmarsceill/just-the-docs
+remote_theme: rundocs/jekyll-rtd-theme
 color_scheme: "dark"
 search_enabled: false
