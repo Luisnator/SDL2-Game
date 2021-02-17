@@ -14,7 +14,7 @@ public:
 	~Game();
 	void init(string title, int xpos, int ypos, int width, int height, int flags);
 	void handleEvents();
-	void update();
+	void update(int delta);
 	void render();
 	void clean();
 	void registerGameobject(Gameobject* go);

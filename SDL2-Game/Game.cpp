@@ -50,11 +50,11 @@ void Game::handleEvents()
 	}
 }
 
-void Game::update()
+void Game::update(int delta)
 {
 	for (auto & value : gameobjects)
 	{
-		value->update(10);
+		value->update(delta);
 	}
 }
 

@@ -1,17 +1,10 @@
 ﻿#include "Player.h"
-
+#include "TextureLoader.h"
 Player::Player(Game* instance) : Gameobject(instance)
 {
 	playerTex = nullptr;
-	int imgFlags = IMG_INIT_PNG;
-	IMG_Init(imgFlags);
-	SDL_Surface* tmpSurface = IMG_Load("../assets/sprite_0.png");
-	if (tmpSurface == NULL)
-	{
-		printf("Unable to load image %s\n", IMG_GetError());
-	}
-	playerTex = SDL_CreateTextureFromSurface(instance->renderer,tmpSurface);
-	SDL_FreeSurface(tmpSurface);
+	playerTex = TextureLoader::loadTexture("../assets/sprite_0.png",instance->renderer);
+	sprite = new Sprite("../assets/Bug_idle1.png", 5, 16, 16, 200, instance->renderer);
 }
 
 Player::~Player()
@@ -20,11 +13,17 @@ Player::~Player()
 
 void Player::update(int delta)
 {
-
+	sprite->update(delta);
 }
 
 void Player::render()
 {
-	SDL_RenderCopy(instance->renderer, playerTex, NULL, NULL);
+	static SDL_Rect* rec = new SDL_Rect;
+	rec->x = 0;
+	rec->y = 0;
+	rec->w = 100;
+	rec->h = 100;
+	SDL_RenderCopy(instance->renderer, sprite->sourceTexture, sprite->spriteClips[sprite->active_clip],rec);
+	//SDL_RenderCopy(instance->renderer, playerTex, NULL, NULL);
 	//cout << "render_player" << endl;
 }
