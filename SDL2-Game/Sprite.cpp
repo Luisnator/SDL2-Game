@@ -54,11 +54,23 @@ void Sprite::render()
 {
 	if (visible)
 	{
-		SDL_RenderCopy(instance->renderer, sourceTexture, getActiveClip(), dimension);
+		SDL_RenderCopyEx(instance->renderer,sourceTexture,getActiveClip(), dimension, NULL, NULL, flip);
 	}
 }
 
 void Sprite::setVisible(bool visible)
 {
 	this->visible = visible;
+}
+
+void Sprite::setHorizontalFlip(bool flip)
+{
+	if (flip)
+	{
+		this->flip = SDL_FLIP_HORIZONTAL;
+	}
+	else
+	{
+		this->flip = SDL_FLIP_NONE;
+	}
 }

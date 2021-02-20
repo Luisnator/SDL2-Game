@@ -19,6 +19,7 @@ public:
 	int speed;
 	int frames;
 	bool visible = true;
+	SDL_RendererFlip flip = SDL_FLIP_NONE;
 	SDL_Rect* dimension;
 	void update(int delta);
 	void render();
@@ -26,5 +27,6 @@ public:
 	void setSize(int width, int height);
 	void setPosition(int x, int y);
 	void setVisible(bool visible);
+	void setHorizontalFlip(bool flip);
 };
 
