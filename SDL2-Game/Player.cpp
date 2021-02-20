@@ -15,7 +15,29 @@ Player::~Player()
 
 void Player::update(int delta)
 {
-	sprite->setPosition(100, 100);
+	this->delta = delta;
+	checkInput();
+	sprite->setPosition(position[0], position[1]);
+}
+
+void Player::checkInput()
+{
+	const Uint8* state = SDL_GetKeyboardState(NULL);
+	if (state[SDL_SCANCODE_UP]) {
+		position[1] -= speed*delta;
+	}
+	if (state[SDL_SCANCODE_DOWN]) {
+		position[1] += speed*delta;
+	}
+	if (state[SDL_SCANCODE_RIGHT]) {
+		position[0] += speed * delta;
+		sprite->setHorizontalFlip(false);
+	}
+	if (state[SDL_SCANCODE_LEFT]) {
+		position[0] -= speed * delta;
+		sprite->setHorizontalFlip(true);
+	}
+	
 }
 
 void Player::render()
