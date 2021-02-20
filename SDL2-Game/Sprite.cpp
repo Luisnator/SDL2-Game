@@ -1,8 +1,8 @@
 #include "Sprite.h"
 
-Sprite::Sprite(string file, int frames, int width, int height,int speed, SDL_Renderer* renderer)
+Sprite::Sprite(string file, int frames, int width, int height,int speed, Game* instance) : Gameobject(instance)
 {
-	sourceTexture = TextureLoader::loadTexture(file,renderer);
+	sourceTexture = TextureLoader::loadTexture(file,instance->renderer);
 	this->frames = frames;
 	this->speed = speed;
 	for (int i = 0; i < frames; i++)
@@ -14,6 +14,15 @@ Sprite::Sprite(string file, int frames, int width, int height,int speed, SDL_Ren
 		spriteFrame->h = height;
 		spriteClips.push_back(spriteFrame);
 	}
+	dimension = new SDL_Rect;
+	dimension->x = 0;
+	dimension->y = 0;
+	dimension->w = width;
+	dimension->h = height;
+}
+SDL_Rect* Sprite::getActiveClip()
+{
+	return spriteClips[active_clip];
 }
 void Sprite::update(int delta)
 {
@@ -28,4 +37,28 @@ void Sprite::update(int delta)
 	{
 		active_clip = 0;
 	}
+}
+void Sprite::setSize(int width, int height)
+{
+	dimension->w = width;
+	dimension->h = height;
+}
+
+void Sprite::setPosition(int x, int y)
+{
+	dimension->x = x;
+	dimension->y = y;
+}
+
+void Sprite::render()
+{
+	if (visible)
+	{
+		SDL_RenderCopy(instance->renderer, sourceTexture, getActiveClip(), dimension);
+	}
+}
+
+void Sprite::setVisible(bool visible)
+{
+	this->visible = visible;
 }

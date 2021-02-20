@@ -4,19 +4,27 @@
 #include "SDL_image.h"
 #include "TextureLoader.h"
 #include <vector>
+#include "Gameobject.h"
 using namespace std;
 
-class Sprite
+class Sprite :
+	public Gameobject
 {
 public:
-	Sprite(string file, int frames, int width, int height,int speed, SDL_Renderer* renderer);
+	Sprite(string file, int frames, int width, int height, int speed, Game* instance);
 	~Sprite();
 	vector<SDL_Rect*> spriteClips;
 	SDL_Texture* sourceTexture;
 	int active_clip = 0;
 	int speed;
 	int frames;
+	bool visible = true;
+	SDL_Rect* dimension;
 	void update(int delta);
 	void render();
+	SDL_Rect* getActiveClip();
+	void setSize(int width, int height);
+	void setPosition(int x, int y);
+	void setVisible(bool visible);
 };
 
