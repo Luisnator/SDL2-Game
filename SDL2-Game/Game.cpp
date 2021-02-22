@@ -1,6 +1,7 @@
 #include "Game.h"
 #include "Gameobject.h"
 #include "Player.h"
+#include "SDL_mixer.h"
 Game::Game()
 {
 	isRunning = false;
@@ -27,6 +28,10 @@ void Game::init(string title, int xpos, int ypos, int width, int height, int fla
 		{
 			SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
 			cout << "Renderer created" << endl;
+		}
+		if (Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 2048) < 0)
+		{
+			printf("SDL_mixer could not initialize! SDL_mixer Error: %s\n", Mix_GetError());
 		}
 		isRunning = true;
 	}

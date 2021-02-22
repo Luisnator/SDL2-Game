@@ -7,6 +7,7 @@ Player::Player(Game* instance) : Gameobject(instance)
 	sprite = new Sprite("../assets/Bug_idle1.png", 5, 16, 16, 200, instance);
 	instance->registerGameobject(sprite);
 	sprite->setSize(100, 100);
+	punchSound = Mix_LoadWAV("../assets/Punch Sound Effect.mp3");
 }
 
 Player::~Player()
@@ -36,6 +37,11 @@ void Player::checkInput()
 	if (state[SDL_SCANCODE_LEFT]) {
 		position[0] -= speed * delta;
 		sprite->setHorizontalFlip(true);
+	}
+	if (state[SDL_SCANCODE_F])
+	{
+		Mix_Volume(1, MIX_MAX_VOLUME / 2);
+		Mix_PlayChannel(1, punchSound, 0);
 	}
 	
 }

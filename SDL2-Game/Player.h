@@ -3,6 +3,7 @@
 #include "SDL_image.h"
 #include <iostream>
 #include "Sprite.h"
+#include "SDL_mixer.h"
 
 class Player :
     public Gameobject
@@ -10,9 +11,13 @@ class Player :
 public:
     SDL_Texture* playerTex;
     Sprite* sprite;
+
     float position[2] = {0,0};
     int delta = 0;
     float speed = 0.2;
+
+    Mix_Chunk* punchSound;
+    
 
     Player(Game* instance);
     ~Player();
