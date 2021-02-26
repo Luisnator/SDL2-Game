@@ -1,6 +1,7 @@
 ﻿#include "Player.h"
 #include "TextureLoader.h"
 #include "exprtk.hpp"
+#include <math.h>
 Player::Player(Game* instance) : Gameobject(instance)
 {
 	playerTex = nullptr;
@@ -80,19 +81,46 @@ void Player::calculateFunction()
 	parser_t parser;
 	parser.compile(expression_string, expression);
 	
+
+	SDL_SetRenderDrawColor(instance->renderer, 0xFF, 0x00, 0x00, 0xFF);
+
+	//Get mouse position
+	int x_m, y_m;
+	SDL_GetMouseState(&x_m, &y_m);
+	SDL_Rect mouse = { x_m,y_m,5,5 };
+
+	SDL_RenderFillRect(instance->renderer, &mouse);
+
+	float normalized_pos[2] = {position[0]/sqrt(position[0]^2+position[1]^2),position[1] / sqrt(position[0] ^ 2 + position[1] ^ 2) };
+	float mousemagitude = sqrt( pow(x_m,2.0) + y_m ^ 2);
+	float normalized_mouse[2] = { (x_m /mousemagitude) , (y_m / mousemagitude) };
+
+	float test =  acos((normalized_mouse[0] * normalized_pos[0] + normalized_mouse[1] * normalized_pos[1]));
+	float angle = acos((x_m * position[0] + y_m * position[1]) / (sqrt(x_m^2 + y_m^2) * (sqrt(int(position[0])^2 + int(position[1])^2))));
+	std::cout << x_m  <<" " << mousemagitude << "" << normalized_mouse[0] <<" " << normalized_mouse[1]<< " " << x_m << endl;
+
 	for (double i = 0; i < 5000; i += 5)
 	{
 		x = i;
 		double y = expression.value();
 		y = -y;
+
+		float s = sin(angle);
+		float c = cos(angle);
+
+		x -= position[0];
+		y -= position[1];
+
+		float xnew = x * c - y * s;
+		float ynew = x * s + y * c;
+
+		x = xnew + position[0];
+		y = ynew + position[1];
+
 		SDL_Rect fillRect = { position[0]+ x + width , position[1] + y+(hight/2), 5, 5 };
-		SDL_SetRenderDrawColor(instance->renderer, 0xFF, 0x00, 0x00, 0xFF);
 		SDL_RenderFillRect(instance->renderer, &fillRect);
+		//cout << x << "  " << y << endl;
 	}
-	//Get mouse position
-	int x_m, y_m;
-	SDL_GetMouseState(&x_m, &y_m);
-	SDL_Rect mouse = { x_m,y_m,5,5 };
-	SDL_RenderFillRect(instance->renderer, &mouse);
+
 
 }

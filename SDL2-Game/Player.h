@@ -12,7 +12,7 @@ public:
     SDL_Texture* playerTex;
     Sprite* sprite;
 
-    float position[2] = {0,0};
+    int position[2] = {0,0};
     float width = 100;
     float hight = 100;
     int delta = 0;
