@@ -13,6 +13,8 @@ public:
     Sprite* sprite;
 
     float position[2] = {0,0};
+    float width = 100;
+    float hight = 100;
     int delta = 0;
     float speed = 0.2;
 
@@ -25,6 +27,7 @@ public:
     void update(int delta);
     void checkInput();
     void render();
+    void calculateFunction();
 
 };
 

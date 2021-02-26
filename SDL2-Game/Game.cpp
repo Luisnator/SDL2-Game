@@ -70,6 +70,7 @@ void Game::render()
 	{
 		value->render();
 	}
+	SDL_SetRenderDrawColor(renderer, 0xFF, 0xFF, 0xFF, 0xFF);
 	SDL_RenderPresent(renderer);
 }
 
