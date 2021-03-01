@@ -82,7 +82,7 @@ void Player::calculateFunction()
 	parser.compile(expression_string, expression);
 	
 
-	SDL_SetRenderDrawColor(instance->renderer, 0xFF, 0x00, 0x00, 0xFF);
+	SDL_SetRenderDrawColor(instance->renderer, 0x00, 0xFF, 0x00, 0xFF);
 
 	//Get mouse position
 	int x_m, y_m;
@@ -91,25 +91,31 @@ void Player::calculateFunction()
 
 	SDL_RenderFillRect(instance->renderer, &mouse);
 
-	float normalized_pos[2] = {position[0]/sqrt(pow(position[0],2)+pow(position[1],2)),position[1] / sqrt(pow(position[0], 2) + pow(position[1], 2)) };
-	float mousemagitude = sqrt(pow(double(x_m),2.0) + pow(y_m,2));
-	float normalized_mouse[2] = { (x_m /mousemagitude) , (y_m / mousemagitude) };
+	float normalized_pos[2] = {(position[0])/sqrt(pow(position[0],2)+pow(position[1],2)),position[1] / sqrt(pow(position[0], 2) + pow(position[1], 2)) };
+	float mouse_vector[2] = { x_m - (position[0]+width),y_m - (position[1]+hight/2) };
+	float mousemagitude = sqrt(pow(double(mouse_vector[0]),2.0) + pow(mouse_vector[1],2));
+	float forward_vector[2] = { 1,0 };
+	float normalized_mouse[2] = { (mouse_vector[0] /mousemagitude) , (mouse_vector[1] / mousemagitude) };
 
 	float test =  acos((normalized_mouse[0] * normalized_pos[0] + normalized_mouse[1] * normalized_pos[1]));
-	float angle = acos((normalized_mouse[0]* normalized_pos[0] + normalized_mouse[1] * normalized_pos[1]) / (sqrt(pow(normalized_mouse[0],2) + pow(normalized_mouse[1],2)) * (sqrt(pow(normalized_pos[0],2) + pow(normalized_pos[1],2)))));
+	float angle = acos((normalized_mouse[0]* forward_vector[0] + normalized_mouse[1] * forward_vector[1]) / (sqrt(pow(normalized_mouse[0],2) + pow(normalized_mouse[1],2)) * (sqrt(pow(forward_vector[0],2) + pow(forward_vector[1],2)))));
 	std::cout << x_m  <<" " << mousemagitude << "" << normalized_mouse[0] <<" " << normalized_mouse[1]<< " " << x_m << std::endl;
 	 
 	for (double i = 0; i < 5000; i += 5)
 	{
+		float mod_angle = angle;
+		if (y_m < position[1] + hight / 2)
+		{
+			mod_angle = -mod_angle;
+		}
 		x = i;
 		double y = expression.value();
 		y = -y;
+		float s = sin(mod_angle);
+		float c = cos(mod_angle);
 
-		float s = sin(-angle);
-		float c = cos(-angle);
-
-		x -= position[0];
-		y -= position[1];
+		//x -= position[0];
+		//y -= position[1];
 
 		float xnew = x * c - y * s;
 		float ynew = x * s + y * c;
@@ -117,7 +123,7 @@ void Player::calculateFunction()
 		x = xnew + position[0];
 		y = ynew + position[1];
 
-		SDL_Rect fillRect = { position[0]+ x + width , position[1] + y+(hight/2), 5, 5 };
+		SDL_Rect fillRect = { x + width ,y+(hight/2), 5, 5 };
 		SDL_RenderFillRect(instance->renderer, &fillRect);
 		//cout << x << "  " << y << endl;
 	}
