@@ -56,8 +56,6 @@ void Player::render()
 	rec->y = 0;
 	rec->w = 100;
 	rec->h = 100;
-	//SDL_RenderCopy(instance->renderer, playerTex, NULL, NULL);
-	//cout << "render_player" << endl;
 	calculateFunction();
 }
 
@@ -66,7 +64,7 @@ void Player::calculateFunction()
 	typedef exprtk::symbol_table<double> symbol_table_t;
 	typedef exprtk::expression<double>     expression_t;
 	typedef exprtk::parser<double>             parser_t;
-	std::string expression_string = "100*sin(x*0.01)";
+	std::string expression_string = "sin(x)";//"sin(2*x)-2*sin(x)";//"1/1000*x^2";//
 	
 	double x = 1;
 
@@ -101,7 +99,7 @@ void Player::calculateFunction()
 	float angle = acos((normalized_mouse[0]* forward_vector[0] + normalized_mouse[1] * forward_vector[1]) / (sqrt(pow(normalized_mouse[0],2) + pow(normalized_mouse[1],2)) * (sqrt(pow(forward_vector[0],2) + pow(forward_vector[1],2)))));
 	std::cout << x_m  <<" " << mousemagitude << "" << normalized_mouse[0] <<" " << normalized_mouse[1]<< " " << x_m << std::endl;
 	 
-	for (double i = 0; i < 5000; i += 5)
+	for (double i = 0; i < 500; i += 0.1)
 	{
 		float mod_angle = angle;
 		if (y_m < position[1] + hight / 2)
@@ -110,15 +108,12 @@ void Player::calculateFunction()
 		}
 		x = i;
 		double y = expression.value();
-		y = -y;
+		y = -y*100;
 		float s = sin(mod_angle);
 		float c = cos(mod_angle);
 
-		//x -= position[0];
-		//y -= position[1];
-
-		float xnew = x * c - y * s;
-		float ynew = x * s + y * c;
+		float xnew = x*100 * c - y * s;
+		float ynew = x*100 * s + y * c;
 
 		x = xnew + position[0];
 		y = ynew + position[1];
