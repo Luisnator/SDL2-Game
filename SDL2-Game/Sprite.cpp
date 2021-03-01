@@ -1,6 +1,6 @@
 #include "Sprite.h"
 
-Sprite::Sprite(string file, int frames, int width, int height,int speed, Game* instance) : Gameobject(instance)
+Sprite::Sprite(std::string file, int frames, int width, int height,int speed, Game* instance) : Gameobject(instance)
 {
 	sourceTexture = TextureLoader::loadTexture(file,instance->renderer);
 	this->frames = frames;

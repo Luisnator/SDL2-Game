@@ -6,13 +6,12 @@ class Gameobject;
 class Player;
 #include <vector>
 
-using namespace std;
 class Game
 {
 public:
 	Game();
 	~Game();
-	void init(string title, int xpos, int ypos, int width, int height, int flags);
+	void init(std::string title, int xpos, int ypos, int width, int height, int flags);
 	void handleEvents();
 	void update(int delta);
 	void render();
@@ -21,7 +20,7 @@ public:
 
 	SDL_Window* window;
 	SDL_Renderer* renderer;
-	vector<Gameobject*> gameobjects;
+	std::vector<Gameobject*> gameobjects;
 	bool isRunning;
 	
 };

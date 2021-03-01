@@ -1,6 +1,6 @@
 #include "TextureLoader.h"
 
-SDL_Texture* TextureLoader::loadTexture(string path,SDL_Renderer* renderer,int flags)
+SDL_Texture* TextureLoader::loadTexture(std::string path,SDL_Renderer* renderer,int flags)
 {
 
     SDL_Texture* newTexture = nullptr;

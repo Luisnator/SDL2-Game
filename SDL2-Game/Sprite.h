@@ -5,15 +5,14 @@
 #include "TextureLoader.h"
 #include <vector>
 #include "Gameobject.h"
-using namespace std;
 
 class Sprite :
 	public Gameobject
 {
 public:
-	Sprite(string file, int frames, int width, int height, int speed, Game* instance);
+	Sprite(std::string file, int frames, int width, int height, int speed, Game* instance);
 	~Sprite();
-	vector<SDL_Rect*> spriteClips;
+	std::vector<SDL_Rect*> spriteClips;
 	SDL_Texture* sourceTexture;
 	int active_clip = 0;
 	int speed;

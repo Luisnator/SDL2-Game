@@ -13,21 +13,21 @@ Game::~Game()
 {
 }
 
-void Game::init(string title, int xpos, int ypos, int width, int height, int flags)
+void Game::init(std::string title, int xpos, int ypos, int width, int height, int flags)
 {
 	if (SDL_Init(SDL_INIT_EVERYTHING) == 0)
 	{
-		cout << "Subsystems Initialised" << endl;
+		std::cout << "Subsystems Initialised" << std::endl;
 		window = SDL_CreateWindow(title.c_str(), xpos, ypos, width, height, flags);
 		if (window)
 		{
-			cout << "Window created" << endl;
+			std::cout << "Window created" << std::endl;
 		}
 		renderer = SDL_CreateRenderer(window, -1, 0);
 		if (renderer)
 		{
 			SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
-			cout << "Renderer created" << endl;
+			std::cout << "Renderer created" << std::endl;
 		}
 		if (Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 2048) < 0)
 		{
@@ -79,7 +79,7 @@ void Game::clean()
 	SDL_DestroyWindow(window);
 	SDL_DestroyRenderer(renderer);
 	SDL_Quit();
-	cout << "bye" << endl;
+	std::cout << "bye" << std::endl;
 }
 
 void Game::registerGameobject(Gameobject* go)

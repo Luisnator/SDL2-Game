@@ -1,7 +1,7 @@
 ﻿#include "Player.h"
 #include "TextureLoader.h"
 #include "exprtk.hpp"
-#include <math.h>
+#include <tgmath.h>
 Player::Player(Game* instance) : Gameobject(instance)
 {
 	playerTex = nullptr;
@@ -91,22 +91,22 @@ void Player::calculateFunction()
 
 	SDL_RenderFillRect(instance->renderer, &mouse);
 
-	float normalized_pos[2] = {position[0]/sqrt(position[0]^2+position[1]^2),position[1] / sqrt(position[0] ^ 2 + position[1] ^ 2) };
-	float mousemagitude = sqrt( pow(x_m,2.0) + y_m ^ 2);
+	float normalized_pos[2] = {position[0]/sqrt(pow(position[0],2)+pow(position[1],2)),position[1] / sqrt(pow(position[0], 2) + pow(position[1], 2)) };
+	float mousemagitude = sqrt(pow(double(x_m),2.0) + pow(y_m,2));
 	float normalized_mouse[2] = { (x_m /mousemagitude) , (y_m / mousemagitude) };
 
 	float test =  acos((normalized_mouse[0] * normalized_pos[0] + normalized_mouse[1] * normalized_pos[1]));
-	float angle = acos((x_m * position[0] + y_m * position[1]) / (sqrt(x_m^2 + y_m^2) * (sqrt(int(position[0])^2 + int(position[1])^2))));
-	std::cout << x_m  <<" " << mousemagitude << "" << normalized_mouse[0] <<" " << normalized_mouse[1]<< " " << x_m << endl;
-
+	float angle = acos((normalized_mouse[0]* normalized_pos[0] + normalized_mouse[1] * normalized_pos[1]) / (sqrt(pow(normalized_mouse[0],2) + pow(normalized_mouse[1],2)) * (sqrt(pow(normalized_pos[0],2) + pow(normalized_pos[1],2)))));
+	std::cout << x_m  <<" " << mousemagitude << "" << normalized_mouse[0] <<" " << normalized_mouse[1]<< " " << x_m << std::endl;
+	 
 	for (double i = 0; i < 5000; i += 5)
 	{
 		x = i;
 		double y = expression.value();
 		y = -y;
 
-		float s = sin(angle);
-		float c = cos(angle);
+		float s = sin(-angle);
+		float c = cos(-angle);
 
 		x -= position[0];
 		y -= position[1];
