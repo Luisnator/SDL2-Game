@@ -18,9 +18,12 @@ public:
 	void clean();
 	void registerGameobject(Gameobject* go);
 
+	void unregisterGameobject(Gameobject* go);
+
 	SDL_Window* window;
 	SDL_Renderer* renderer;
 	std::vector<Gameobject*> gameobjects;
+	SDL_Event event;
 	bool isRunning;
 	
 };

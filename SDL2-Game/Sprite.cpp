@@ -20,6 +20,16 @@ Sprite::Sprite(std::string file, int frames, int width, int height,int speed, Ga
 	dimension->w = width;
 	dimension->h = height;
 }
+Sprite::~Sprite()
+{
+	instance->unregisterGameobject(this);
+	delete dimension;
+	for (int i = 0; i < spriteClips.size(); i++)
+	{
+		delete spriteClips[i];
+	}
+	SDL_free(sourceTexture);
+}
 SDL_Rect* Sprite::getActiveClip()
 {
 	return spriteClips[active_clip];

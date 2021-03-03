@@ -43,9 +43,7 @@ void Game::init(std::string title, int xpos, int ypos, int width, int height, in
 
 void Game::handleEvents()
 {
-	SDL_Event event;
 	SDL_PollEvent(&event);
-
 	switch (event.type) {
 	case SDL_QUIT:
 		isRunning = false;
@@ -57,9 +55,13 @@ void Game::handleEvents()
 
 void Game::update(int delta)
 {
-	for (auto & value : gameobjects)
+	//for (auto & value : gameobjects)
+	//{
+	//	value->update(delta);
+	//}
+	for (int i = 0; i < gameobjects.size(); i++)
 	{
-		value->update(delta);
+		gameobjects[i]->update(delta);
 	}
 }
 
@@ -85,4 +87,15 @@ void Game::clean()
 void Game::registerGameobject(Gameobject* go)
 {
 	gameobjects.push_back(go);
+}
+
+void Game::unregisterGameobject(Gameobject* go)
+{
+	for (int i = 0; i < gameobjects.size(); i++)
+	{
+		if (gameobjects[i] == go)
+		{
+			gameobjects.erase(gameobjects.begin() + i);
+		}
+	}
 }

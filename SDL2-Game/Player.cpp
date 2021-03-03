@@ -2,14 +2,15 @@
 #include "TextureLoader.h"
 #include "exprtk.hpp"
 #include <tgmath.h>
+#include "Projectile.h"
 Player::Player(Game* instance) : Gameobject(instance)
 {
 	playerTex = nullptr;
 	playerTex = TextureLoader::loadTexture("../assets/sprite_0.png",instance->renderer);
-	sprite = new Sprite("../assets/Bug_idle1.png", 5, 16, 16, 200, instance);
+	sprite = new Sprite("../assets/Robot_with_jetpack.png", 4, 16, 16, 200, instance);
 	instance->registerGameobject(sprite);
 	sprite->setSize(width, hight);
-	punchSound = Mix_LoadWAV("../assets/Punch Sound Effect.mp3");
+	plasmaShot = Mix_LoadWAV("../assets/PlasmaShot.mp3");
 }
 
 Player::~Player()
@@ -19,12 +20,15 @@ Player::~Player()
 void Player::update(int delta)
 {
 	this->delta = delta;
-	checkInput();
+	checkInput(delta);
 	sprite->setPosition(position[0], position[1]);
 }
 
-void Player::checkInput()
+void Player::checkInput(int delta)
 {
+	static int t = 501;
+	const int threshold = 1000;
+	t += delta;
 	const Uint8* state = SDL_GetKeyboardState(NULL);
 	if (state[SDL_SCANCODE_UP]) {
 		position[1] -= speed*delta;
@@ -39,13 +43,17 @@ void Player::checkInput()
 	if (state[SDL_SCANCODE_LEFT]) {
 		position[0] -= speed * delta;
 		sprite->setHorizontalFlip(true);
-	}
-	if (state[SDL_SCANCODE_F])
+	}	
+	if (SDL_GetMouseState(NULL,NULL) & SDL_BUTTON_LMASK && t > threshold)
 	{
 		Mix_Volume(1, MIX_MAX_VOLUME / 2);
-		Mix_PlayChannel(1, punchSound, 0);
-
+		Mix_PlayChannel(1, plasmaShot, 0);
+		int corrected_pos[2] = { position[0] + width ,position[1] + hight/2};
+		Projectile* p = new Projectile(corrected_pos, cur_angle, expression_string, instance);
+		t = 0;
 	}
+
+	
 	
 }
 
@@ -64,7 +72,7 @@ void Player::calculateFunction()
 	typedef exprtk::symbol_table<double> symbol_table_t;
 	typedef exprtk::expression<double>     expression_t;
 	typedef exprtk::parser<double>             parser_t;
-	std::string expression_string = "sin(x)";//"sin(2*x)-2*sin(x)";//"1/1000*x^2";//
+	expression_string = "sin(x)";//"x^2-2x";//"sin(2*x)-2*sin(x)";//////"1/1000*x^2";//
 	
 	double x = 1;
 
@@ -95,9 +103,7 @@ void Player::calculateFunction()
 	float forward_vector[2] = { 1,0 };
 	float normalized_mouse[2] = { (mouse_vector[0] /mousemagitude) , (mouse_vector[1] / mousemagitude) };
 
-	float test =  acos((normalized_mouse[0] * normalized_pos[0] + normalized_mouse[1] * normalized_pos[1]));
 	float angle = acos((normalized_mouse[0]* forward_vector[0] + normalized_mouse[1] * forward_vector[1]) / (sqrt(pow(normalized_mouse[0],2) + pow(normalized_mouse[1],2)) * (sqrt(pow(forward_vector[0],2) + pow(forward_vector[1],2)))));
-	std::cout << x_m  <<" " << mousemagitude << "" << normalized_mouse[0] <<" " << normalized_mouse[1]<< " " << x_m << std::endl;
 	 
 	for (double i = 0; i < 500; i += 0.1)
 	{
@@ -117,10 +123,9 @@ void Player::calculateFunction()
 
 		x = xnew + position[0];
 		y = ynew + position[1];
-
+		cur_angle = mod_angle;
 		SDL_Rect fillRect = { x + width ,y+(hight/2), 5, 5 };
 		SDL_RenderFillRect(instance->renderer, &fillRect);
-		//cout << x << "  " << y << endl;
 	}
 
 

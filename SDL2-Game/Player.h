@@ -16,16 +16,19 @@ public:
     float width = 100;
     float hight = 100;
     int delta = 0;
-    float speed = 0.2;
+    float speed = 0.3;
+    std::string expression_string;
 
-    Mix_Chunk* punchSound;
+    float cur_angle = 0;
+
+    Mix_Chunk* plasmaShot;
     
 
     Player(Game* instance);
     ~Player();
 
     void update(int delta);
-    void checkInput();
+    void checkInput(int delta);
     void render();
     void calculateFunction();
 
