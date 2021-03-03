@@ -99,3 +99,8 @@ void Game::unregisterGameobject(Gameobject* go)
 		}
 	}
 }
+
+std::vector<Gameobject*> Game::getGameobjects()
+{
+	return gameobjects;
+}

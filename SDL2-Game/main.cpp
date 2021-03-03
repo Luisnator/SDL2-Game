@@ -2,6 +2,7 @@
 #include "Game.h"
 #include "Player.h"
 #include "Background.h"
+#include "Enemy.h"
 
 int main(int argc, char* argv[])
 {
@@ -11,6 +12,10 @@ int main(int argc, char* argv[])
 	game->registerGameobject(bg);
 	Player* player = new Player(game);
 	game->registerGameobject(player);
+	Enemy* enemy = new Enemy({500,500,100,100}, game);
+	game->registerGameobject(enemy);
+	Enemy* enemy2 = new Enemy({ 750,300,100,100 }, game);
+	game->registerGameobject(enemy2);
 	int tickstart = SDL_GetTicks();
 	int tickend = SDL_GetTicks();
 	while (game->isRunning)

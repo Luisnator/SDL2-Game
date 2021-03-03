@@ -17,8 +17,8 @@ public:
 	void render();
 	void clean();
 	void registerGameobject(Gameobject* go);
-
 	void unregisterGameobject(Gameobject* go);
+	std::vector<Gameobject*> getGameobjects();
 
 	SDL_Window* window;
 	SDL_Renderer* renderer;

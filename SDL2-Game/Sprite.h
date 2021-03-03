@@ -18,6 +18,8 @@ public:
 	int speed;
 	int frames;
 	bool visible = true;
+	int time = 0;
+
 	SDL_RendererFlip flip = SDL_FLIP_NONE;
 	SDL_Rect* dimension;
 	void update(int delta);

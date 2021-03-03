@@ -19,6 +19,7 @@ Sprite::Sprite(std::string file, int frames, int width, int height,int speed, Ga
 	dimension->y = 0;
 	dimension->w = width;
 	dimension->h = height;
+	type = "Sprite";
 }
 Sprite::~Sprite()
 {
@@ -36,7 +37,6 @@ SDL_Rect* Sprite::getActiveClip()
 }
 void Sprite::update(int delta)
 {
-	static int time = 0;
 	time += delta;
 	if (time > speed)
 	{

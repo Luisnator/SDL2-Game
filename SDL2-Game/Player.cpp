@@ -5,12 +5,11 @@
 #include "Projectile.h"
 Player::Player(Game* instance) : Gameobject(instance)
 {
-	playerTex = nullptr;
-	playerTex = TextureLoader::loadTexture("../assets/sprite_0.png",instance->renderer);
 	sprite = new Sprite("../assets/Robot_with_jetpack.png", 4, 16, 16, 200, instance);
 	instance->registerGameobject(sprite);
-	sprite->setSize(width, hight);
+	sprite->setSize(width, height);
 	plasmaShot = Mix_LoadWAV("../assets/PlasmaShot.mp3");
+	type = "Player";
 }
 
 Player::~Player()
@@ -48,7 +47,7 @@ void Player::checkInput(int delta)
 	{
 		Mix_Volume(1, MIX_MAX_VOLUME / 2);
 		Mix_PlayChannel(1, plasmaShot, 0);
-		int corrected_pos[2] = { position[0] + width ,position[1] + hight/2};
+		SDL_Rect corrected_pos = { position[0] + width ,position[1] + height/2,50,50};
 		Projectile* p = new Projectile(corrected_pos, cur_angle, expression_string, instance);
 		t = 0;
 	}
@@ -98,7 +97,7 @@ void Player::calculateFunction()
 	SDL_RenderFillRect(instance->renderer, &mouse);
 
 	float normalized_pos[2] = {(position[0])/sqrt(pow(position[0],2)+pow(position[1],2)),position[1] / sqrt(pow(position[0], 2) + pow(position[1], 2)) };
-	float mouse_vector[2] = { x_m - (position[0]+width),y_m - (position[1]+hight/2) };
+	float mouse_vector[2] = { x_m - (position[0]+width),y_m - (position[1]+height/2) };
 	float mousemagitude = sqrt(pow(double(mouse_vector[0]),2.0) + pow(mouse_vector[1],2));
 	float forward_vector[2] = { 1,0 };
 	float normalized_mouse[2] = { (mouse_vector[0] /mousemagitude) , (mouse_vector[1] / mousemagitude) };
@@ -108,7 +107,7 @@ void Player::calculateFunction()
 	for (double i = 0; i < 500; i += 0.1)
 	{
 		float mod_angle = angle;
-		if (y_m < position[1] + hight / 2)
+		if (y_m < position[1] + height / 2)
 		{
 			mod_angle = -mod_angle;
 		}
@@ -124,7 +123,7 @@ void Player::calculateFunction()
 		x = xnew + position[0];
 		y = ynew + position[1];
 		cur_angle = mod_angle;
-		SDL_Rect fillRect = { x + width ,y+(hight/2), 5, 5 };
+		SDL_Rect fillRect = { x + width ,y+(height/2), 5, 5 };
 		SDL_RenderFillRect(instance->renderer, &fillRect);
 	}
 
