@@ -11,9 +11,8 @@ class Player :
 public:
     Sprite* sprite;
 
-    int position[2] = {0,0};
-    float width = 100;
-    float height = 100;
+    SDL_Rect position = {200,500,100,100};
+
     int delta = 0;
     float speed = 0.3;
     std::string expression_string;

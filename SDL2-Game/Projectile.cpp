@@ -3,7 +3,7 @@
 Projectile::Projectile(SDL_Rect position, float angle, std::string expression, Game* instance) : Gameobject(instance)
 {
 	instance->registerGameobject(this);
-	sprite = new Sprite("../assets/PlasmaProjectile.png",1, 16, 16, 200, instance);
+	sprite = new Sprite("../assets/PlasmaProjectile_a.png",2, 11, 11, 200, instance);
 	sprite->setSize(50, 50);
 	instance->registerGameobject(sprite);
 	start_position = position;
@@ -72,9 +72,10 @@ void Projectile::checkCollision()
 	auto gameobjects = instance->getGameobjects();
 	for (int i = 0; i < gameobjects.size()-1; i++)
 	{
-		std::string filter = "Enemy";
+		std::string filter1 = "Enemy";
+		std::string filter2 = "Wall";
 		std::string source = gameobjects[i]->type;
-		if(source == filter)
+		if(source == filter1)
 		{
 			Enemy* e = (Enemy*)gameobjects[i];
 			//The sides of the rectangles
@@ -123,7 +124,55 @@ void Projectile::checkCollision()
 				e->screech();
 			}
 		}
+		if (source == filter2)
+		{
+			Wall* w = (Wall*)gameobjects[i];
+			//The sides of the rectangles
+			int leftA, leftB;
+			int rightA, rightB;
+			int topA, topB;
+			int bottomA, bottomB;
 
+			//Calculate the sides of rect A
+			leftA = w->position.x;
+			rightA = w->position.x + w->position.w;
+			topA = w->position.y;
+			bottomA = w->position.y + w->position.h;
+
+			//Calculate the sides of rect B
+			leftB = current_position.x;
+			rightB = current_position.x + current_position.w;
+			topB = current_position.y;
+			bottomB = current_position.y + current_position.h;
+
+			bool collide = true;
+			//If any of the sides from A are outside of B
+			if (bottomA <= topB)
+			{
+				collide = false;
+			}
+
+			if (topA >= bottomB)
+			{
+				collide = false;
+			}
+
+			if (rightA <= leftB)
+			{
+				collide = false;
+			}
+
+			if (leftA >= rightB)
+			{
+				collide = false;
+			}
+
+			if (collide == true)
+			{
+				delete this; 
+				return;
+			}
+		}
 		
 	}
 }

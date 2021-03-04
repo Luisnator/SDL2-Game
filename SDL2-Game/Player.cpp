@@ -7,7 +7,7 @@ Player::Player(Game* instance) : Gameobject(instance)
 {
 	sprite = new Sprite("../assets/Robot_with_jetpack.png", 4, 16, 16, 200, instance);
 	instance->registerGameobject(sprite);
-	sprite->setSize(width, height);
+	sprite->setSize(position.w, position.h);
 	plasmaShot = Mix_LoadWAV("../assets/PlasmaShot.mp3");
 	type = "Player";
 }
@@ -20,7 +20,7 @@ void Player::update(int delta)
 {
 	this->delta = delta;
 	checkInput(delta);
-	sprite->setPosition(position[0], position[1]);
+	sprite->setPosition(position.x, position.y);
 }
 
 void Player::checkInput(int delta)
@@ -30,24 +30,24 @@ void Player::checkInput(int delta)
 	t += delta;
 	const Uint8* state = SDL_GetKeyboardState(NULL);
 	if (state[SDL_SCANCODE_UP]) {
-		position[1] -= speed*delta;
+		position.y -= speed*delta;
 	}
 	if (state[SDL_SCANCODE_DOWN]) {
-		position[1] += speed*delta;
+		position.y += speed*delta;
 	}
 	if (state[SDL_SCANCODE_RIGHT]) {
-		position[0] += speed * delta;
+		position.x += speed * delta;
 		sprite->setHorizontalFlip(false);
 	}
 	if (state[SDL_SCANCODE_LEFT]) {
-		position[0] -= speed * delta;
+		position.x -= speed * delta;
 		sprite->setHorizontalFlip(true);
 	}	
 	if (SDL_GetMouseState(NULL,NULL) & SDL_BUTTON_LMASK && t > threshold)
 	{
 		Mix_Volume(1, MIX_MAX_VOLUME / 2);
 		Mix_PlayChannel(1, plasmaShot, 0);
-		SDL_Rect corrected_pos = { position[0] + width ,position[1] + height/2,50,50};
+		SDL_Rect corrected_pos = { position.x + position.w ,position.y + position.h/2,50,50};
 		Projectile* p = new Projectile(corrected_pos, cur_angle, expression_string, instance);
 		t = 0;
 	}
@@ -96,8 +96,8 @@ void Player::calculateFunction()
 
 	SDL_RenderFillRect(instance->renderer, &mouse);
 
-	float normalized_pos[2] = {(position[0])/sqrt(pow(position[0],2)+pow(position[1],2)),position[1] / sqrt(pow(position[0], 2) + pow(position[1], 2)) };
-	float mouse_vector[2] = { x_m - (position[0]+width),y_m - (position[1]+height/2) };
+	float normalized_pos[2] = {(position.x)/sqrt(pow(position.x,2)+pow(position.y,2)),position.y / sqrt(pow(position.x, 2) + pow(position.y, 2)) };
+	float mouse_vector[2] = { x_m - (position.x+position.w),y_m - (position.y+position.h/2) };
 	float mousemagitude = sqrt(pow(double(mouse_vector[0]),2.0) + pow(mouse_vector[1],2));
 	float forward_vector[2] = { 1,0 };
 	float normalized_mouse[2] = { (mouse_vector[0] /mousemagitude) , (mouse_vector[1] / mousemagitude) };
@@ -107,7 +107,7 @@ void Player::calculateFunction()
 	for (double i = 0; i < 500; i += 0.1)
 	{
 		float mod_angle = angle;
-		if (y_m < position[1] + height / 2)
+		if (y_m < position.y + position.h / 2)
 		{
 			mod_angle = -mod_angle;
 		}
@@ -120,10 +120,10 @@ void Player::calculateFunction()
 		float xnew = x*100 * c - y * s;
 		float ynew = x*100 * s + y * c;
 
-		x = xnew + position[0];
-		y = ynew + position[1];
+		x = xnew + position.x;
+		y = ynew + position.y;
 		cur_angle = mod_angle;
-		SDL_Rect fillRect = { x + width ,y+(height/2), 5, 5 };
+		SDL_Rect fillRect = { x + position.w ,y+(position.h/2), 5, 5 };
 		SDL_RenderFillRect(instance->renderer, &fillRect);
 	}
 

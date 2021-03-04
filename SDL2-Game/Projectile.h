@@ -5,6 +5,7 @@
 #include <string.h>
 #include "exprtk.hpp"
 #include "Enemy.h"
+#include "Wall.h"
 
 class Projectile 
 	: public Gameobject
