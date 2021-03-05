@@ -2,6 +2,7 @@
 #include "Gameobject.h"
 #include "Player.h"
 #include "SDL_mixer.h"
+#include "SDL_ttf.h"
 Game::Game()
 {
 	isRunning = false;
@@ -32,6 +33,10 @@ void Game::init(std::string title, int xpos, int ypos, int width, int height, in
 		if (Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 2048) < 0)
 		{
 			printf("SDL_mixer could not initialize! SDL_mixer Error: %s\n", Mix_GetError());
+		}
+		if (TTF_Init() == -1)
+		{
+			printf("SDL_ttf could not initialize! SDL_ttf Error: %s\n", TTF_GetError());
 		}
 		isRunning = true;
 	}
@@ -80,6 +85,8 @@ void Game::clean()
 {
 	SDL_DestroyWindow(window);
 	SDL_DestroyRenderer(renderer);
+	TTF_Quit();
+	IMG_Quit();
 	SDL_Quit();
 	std::cout << "bye" << std::endl;
 }

@@ -2,7 +2,7 @@
 
 Background::Background(std::string path, Game* instance) : Gameobject(instance)
 {
-	image = TextureLoader::loadTexture(path, instance->renderer);
+	image = TextureLoader::loadTextureFromImage(path, instance->renderer);
 	type = "Background";
 }
 

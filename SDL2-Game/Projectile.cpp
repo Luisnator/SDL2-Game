@@ -4,7 +4,7 @@ Projectile::Projectile(SDL_Rect position, float angle, std::string expression, G
 {
 	instance->registerGameobject(this);
 	sprite = new Sprite("../assets/PlasmaProjectile_a.png",2, 11, 11, 200, instance);
-	sprite->setSize(50, 50);
+	sprite->setSize(position.w, position.h);
 	instance->registerGameobject(sprite);
 	start_position = position;
 	current_position = start_position;

@@ -1,8 +1,11 @@
 #include "TextureLoader.h"
+#include "SDL_ttf.h"
 
-SDL_Texture* TextureLoader::loadTexture(std::string path,SDL_Renderer* renderer,int flags)
+int TextureLoader::height = 0;
+int TextureLoader::width = 0;
+
+SDL_Texture* TextureLoader::loadTextureFromImage(std::string path,SDL_Renderer* renderer,int flags)
 {
-
     SDL_Texture* newTexture = nullptr;
     IMG_Init(flags);
     SDL_Surface* loadedSurface = IMG_Load(path.c_str());
@@ -23,4 +26,19 @@ SDL_Texture* TextureLoader::loadTexture(std::string path,SDL_Renderer* renderer,
         SDL_FreeSurface(loadedSurface);
     }
     return newTexture;
+}
+
+SDL_Texture* TextureLoader::loadTextureFromText(std::string text, SDL_Color color, SDL_Renderer* renderer)
+{
+    static TTF_Font* font = TTF_OpenFont("../assets/Silkscreen/slkscr.ttf", 28);
+    if (font == NULL)
+    {
+        printf("Failed to load lazy font! SDL_ttf Error: %s\n", TTF_GetError());
+    }
+    SDL_Surface* textSurface = TTF_RenderText_Solid(font, text.c_str(), color);
+    width = textSurface->w;
+    height = textSurface->h;
+    SDL_Texture* textTexture = SDL_CreateTextureFromSurface(renderer, textSurface);
+    SDL_FreeSurface(textSurface);
+    return textTexture;
 }

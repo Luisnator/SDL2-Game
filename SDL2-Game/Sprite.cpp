@@ -2,7 +2,7 @@
 
 Sprite::Sprite(std::string file, int frames, int width, int height,int speed, Game* instance) : Gameobject(instance)
 {
-	sourceTexture = TextureLoader::loadTexture(file,instance->renderer);
+	sourceTexture = TextureLoader::loadTextureFromImage(file,instance->renderer);
 	this->frames = frames;
 	this->speed = speed;
 	for (int i = 0; i < frames; i++)
@@ -29,7 +29,7 @@ Sprite::~Sprite()
 	{
 		delete spriteClips[i];
 	}
-	SDL_free(sourceTexture);
+	SDL_DestroyTexture(sourceTexture);
 }
 SDL_Rect* Sprite::getActiveClip()
 {

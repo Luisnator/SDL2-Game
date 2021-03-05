@@ -10,12 +10,15 @@ class Player :
 {
 public:
     Sprite* sprite;
+    SDL_Texture* text;
 
     SDL_Rect position = {200,500,100,100};
 
     int delta = 0;
     float speed = 0.3;
-    std::string expression_string;
+    std::string expression_string = "0";
+
+    bool toggle_input = false;
 
     float cur_angle = 0;
 
