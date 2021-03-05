@@ -8,8 +8,10 @@ Player::Player(Game* instance) : Gameobject(instance)
 	sprite = new Sprite("../assets/Robot_with_jetpack.png", 4, 16, 16, 200, instance);
 	instance->registerGameobject(sprite);
 	sprite->setSize(position.w, position.h);
+
 	plasmaShot = Mix_LoadWAV("../assets/PlasmaShot.mp3");
-	text = TextureLoader::loadTextureFromText("BLABLUB", { 0,0,0 }, instance->renderer);
+
+	text = TextureLoader::loadTextureFromText("0", { 0,0,0 }, instance->renderer);
 	type = "Player";
 }
 
@@ -20,15 +22,28 @@ Player::~Player()
 void Player::update(int delta)
 {
 	this->delta = delta;
+
 	checkInput(delta);
+
 	sprite->setPosition(position.x, position.y);
-	SDL_DestroyTexture(text);
-	std::string renderText = expression_string;
-	if (expression_string == "")
+
+	std::string appendix; 
+	SDL_Color c;
+	if (!toggle_input)
 	{
-		renderText = "empty";
+		c = { 0,0,0};
+		appendix = "     | press F to edit";
 	}
-	text = TextureLoader::loadTextureFromText(renderText, { 0,0,0 }, instance->renderer);
+	else
+	{
+		c = { 255,0,0 };
+		appendix = "<-- Confirm with Enter";
+	}
+
+	SDL_DestroyTexture(text);
+	std::string renderText;
+	renderText = "Smart Gun Equation:  " + expression_string + appendix;
+	text = TextureLoader::loadTextureFromText(renderText, c, instance->renderer);
 }
 
 void Player::checkInput(int delta)
@@ -71,7 +86,7 @@ void Player::checkInput(int delta)
 	else
 	{
 		SDL_StartTextInput();
-		if (state[SDL_SCANCODE_F])
+		if (state[SDL_SCANCODE_RETURN])
 		{
 			toggle_input = !toggle_input;
 			SDL_Delay(200);
@@ -114,8 +129,8 @@ void Player::checkInput(int delta)
 void Player::render()
 {
 	static SDL_Rect* rec = new SDL_Rect;
-	rec->x = 500;
-	rec->y = 500;
+	rec->x = 50;
+	rec->y = 50;
 	rec->w = TextureLoader::width;
 	rec->h = TextureLoader::height;
 	calculateFunction();

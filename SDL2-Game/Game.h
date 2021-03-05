@@ -25,6 +25,9 @@ public:
 	std::vector<Gameobject*> gameobjects;
 	SDL_Event event;
 	bool isRunning;
+
+	int window_w = 0;
+	int window_h = 0;
 	
 };
 

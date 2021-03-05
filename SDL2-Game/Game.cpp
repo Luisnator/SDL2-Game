@@ -16,6 +16,8 @@ Game::~Game()
 
 void Game::init(std::string title, int xpos, int ypos, int width, int height, int flags)
 {
+	window_w = width;
+	window_h = height;
 	if (SDL_Init(SDL_INIT_EVERYTHING) == 0)
 	{
 		std::cout << "Subsystems Initialised" << std::endl;
