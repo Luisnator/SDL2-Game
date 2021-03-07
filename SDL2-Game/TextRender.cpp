@@ -10,6 +10,7 @@ TextRender::TextRender(SDL_Rect position,std::string text,int size ,SDL_Color c,
 
 TextRender::~TextRender()
 {
+	SDL_DestroyTexture(tex);
 }
 
 void TextRender::update(int delta)

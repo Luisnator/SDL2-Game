@@ -12,6 +12,8 @@ Wall::Wall(SDL_Rect position, Game* instance):Gameobject(instance)
 
 Wall::~Wall()
 {
+	instance->unregisterGameobject(sprite);
+	delete sprite;	
 }
 
 void Wall::update(int delta)

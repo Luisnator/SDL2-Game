@@ -9,7 +9,7 @@ class Gameobject
 {
 public:
 	Gameobject(Game* instance);
-	~Gameobject();
+	virtual ~Gameobject();
 
 	Game* instance;
 	std::string type;

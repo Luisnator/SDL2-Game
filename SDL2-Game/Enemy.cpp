@@ -14,6 +14,7 @@ Enemy::Enemy(SDL_Rect position,Game* instance): Gameobject(instance)
 Enemy::~Enemy()
 {
 	delete sprite;
+	Mix_FreeChunk(m_screech);
 }
 
 void Enemy::update(int delta)

@@ -8,6 +8,7 @@ Background::Background(std::string path, Game* instance) : Gameobject(instance)
 
 Background::~Background()
 {
+	SDL_DestroyTexture(image);
 }
 
 void Background::update(int delta)

@@ -25,10 +25,10 @@ Level_One::~Level_One()
 
 void Level_One::update(int delta)
 {
+
 	SDL_PollEvent(&instance->event);
 	const Uint8* state = SDL_GetKeyboardState(NULL);
 	if (state[SDL_SCANCODE_R]) {
-		std::cout << "Test" << std::endl;
 		Level_One* lo = new Level_One(instance);
 		instance->unregisterGameobject(this);
 		instance->registerGameobject(lo);

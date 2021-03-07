@@ -20,6 +20,11 @@ Player::Player(Game* instance) : Gameobject(instance)
 
 Player::~Player()
 {
+	instance->unregisterGameobject(sprite);
+	instance->unregisterGameobject(tr);
+	Mix_FreeChunk(plasmaShot);
+	delete sprite;
+	delete tr;
 }
 
 void Player::update(int delta)
