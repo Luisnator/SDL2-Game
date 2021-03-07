@@ -7,7 +7,7 @@ Projectile::Projectile(SDL_Rect position, float angle, std::string expression, G
 	sprite->setSize(position.w, position.h);
 	instance->registerGameobject(sprite);
 	start_position = position;
-	current_position = start_position;
+	this->position = start_position;
 	this->angle = angle;
 	expression_string = expression;
 	type = "Projectile";
@@ -23,7 +23,7 @@ void Projectile::update(int delta)
 {
 	const int lifetime = 4000;
 	calculateFunction(delta);
-	sprite->setPosition(current_position.x, current_position.y);
+	sprite->setPosition(position.x, position.y);
 	checkCollision();
 	if (t > lifetime)
 	{
@@ -63,116 +63,26 @@ void Projectile::calculateFunction(int delta)
 	float xnew = x * 100 * c - y * s;
 	float ynew = x * 100 * s + y * c;
 
-	current_position.x = xnew + start_position.x - sprite->dimension->w/2;
-	current_position.y = ynew + start_position.y - sprite->dimension->h/2;
+	position.x = xnew + start_position.x - sprite->dimension->w/2;
+	position.y = ynew + start_position.y - sprite->dimension->h/2;
 }
 
 void Projectile::checkCollision()
 {
-	auto gameobjects = instance->getGameobjects();
-	for (int i = 0; i < gameobjects.size()-1; i++)
+	auto collideobjects = collision();
+
+	for (int i = 0; i < collideobjects.size(); i++)
 	{
-		std::string filter1 = "Enemy";
-		std::string filter2 = "Wall";
-		std::string source = gameobjects[i]->type;
-		if(source == filter1)
+		if (collideobjects[i]->type == "Enemy")
 		{
-			Enemy* e = (Enemy*)gameobjects[i];
-			//The sides of the rectangles
-			int leftA, leftB;
-			int rightA, rightB;
-			int topA, topB;
-			int bottomA, bottomB;
-
-			//Calculate the sides of rect A
-			leftA = e->position.x;
-			rightA = e->position.x + e->position.w;
-			topA = e->position.y;
-			bottomA = e->position.y + e->position.h;
-
-			//Calculate the sides of rect B
-			leftB = current_position.x;
-			rightB = current_position.x + current_position.w;
-			topB = current_position.y;
-			bottomB = current_position.y + current_position.h;
-
-			bool collide = true;
-			//If any of the sides from A are outside of B
-			if (bottomA <= topB)
-			{
-				collide =  false;
-			}
-
-			if (topA >= bottomB)
-			{
-				collide =  false;
-			}
-
-			if (rightA <= leftB)
-			{
-				collide =  false;
-			}
-
-			if (leftA >= rightB)
-			{
-				collide = false;
-			}
-			
-			if (collide == true)
-			{
-				e->sprite->setVisible(false);
-				e->screech();
-			}
+			Enemy* e = (Enemy*)collideobjects[i];
+			e->sprite->setVisible(false);
+			e->screech();
 		}
-		if (source == filter2)
+		if (collideobjects[i]->type == "Wall")
 		{
-			Wall* w = (Wall*)gameobjects[i];
-			//The sides of the rectangles
-			int leftA, leftB;
-			int rightA, rightB;
-			int topA, topB;
-			int bottomA, bottomB;
-
-			//Calculate the sides of rect A
-			leftA = w->position.x;
-			rightA = w->position.x + w->position.w;
-			topA = w->position.y;
-			bottomA = w->position.y + w->position.h;
-
-			//Calculate the sides of rect B
-			leftB = current_position.x;
-			rightB = current_position.x + current_position.w;
-			topB = current_position.y;
-			bottomB = current_position.y + current_position.h;
-
-			bool collide = true;
-			//If any of the sides from A are outside of B
-			if (bottomA <= topB)
-			{
-				collide = false;
-			}
-
-			if (topA >= bottomB)
-			{
-				collide = false;
-			}
-
-			if (rightA <= leftB)
-			{
-				collide = false;
-			}
-
-			if (leftA >= rightB)
-			{
-				collide = false;
-			}
-
-			if (collide == true)
-			{
-				delete this; 
-				return;
-			}
+			delete this;
+			return;
 		}
-		
 	}
 }

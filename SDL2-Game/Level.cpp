@@ -7,6 +7,12 @@ Level::Level(Game* instance):Gameobject(instance)
 
 Level::~Level()
 {
+	for (int i = 0; i < lvlObjects.size(); i++)
+	{
+		instance->unregisterGameobject(lvlObjects[i]);
+		delete lvlObjects[i];
+	}
+	//instance->unregisterGameobject(this);
 }
 
 void Level::update(int delta)

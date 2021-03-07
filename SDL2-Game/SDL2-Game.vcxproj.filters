@@ -51,6 +51,12 @@
     <ClCompile Include="Level_One.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
+    <ClCompile Include="Laserbarrier.cpp">
+      <Filter>Quelldateien</Filter>
+    </ClCompile>
+    <ClCompile Include="TextRender.cpp">
+      <Filter>Quelldateien</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Game.h">
@@ -84,6 +90,12 @@
       <Filter>Headerdateien</Filter>
     </ClInclude>
     <ClInclude Include="Level_One.h">
+      <Filter>Headerdateien</Filter>
+    </ClInclude>
+    <ClInclude Include="Laserbarrier.h">
+      <Filter>Headerdateien</Filter>
+    </ClInclude>
+    <ClInclude Include="TextRender.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
   </ItemGroup>

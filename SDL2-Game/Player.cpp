@@ -5,13 +5,16 @@
 #include "Projectile.h"
 Player::Player(Game* instance) : Gameobject(instance)
 {
+	position = { 200,500,100,100 };
 	sprite = new Sprite("../assets/Robot_with_jetpack.png", 4, 16, 16, 200, instance);
 	instance->registerGameobject(sprite);
 	sprite->setSize(position.w, position.h);
 
 	plasmaShot = Mix_LoadWAV("../assets/PlasmaShot.mp3");
 
-	text = TextureLoader::loadTextureFromText("0", { 0,0,0 }, instance->renderer);
+	tr = new TextRender({ 50,50,0,0 }, "0", 28, { 0,0,0,0 }, instance);
+	instance->registerGameobject(tr);
+
 	type = "Player";
 }
 
@@ -39,11 +42,10 @@ void Player::update(int delta)
 		c = { 255,0,0 };
 		appendix = "<-- Confirm with Enter";
 	}
-
-	SDL_DestroyTexture(text);
 	std::string renderText;
 	renderText = "Smart Gun Equation:  " + expression_string + appendix;
-	text = TextureLoader::loadTextureFromText(renderText, c, instance->renderer);
+	tr->setColor(c);
+	tr->setText(renderText);
 }
 
 void Player::checkInput(int delta)
@@ -55,19 +57,37 @@ void Player::checkInput(int delta)
 	if (!toggle_input)
 	{
 		SDL_StopTextInput();
+		int movement = speed * delta;
 		if (state[SDL_SCANCODE_UP]) {
-			position.y -= speed * delta;
+			position.y -= movement;
+			if (checkCollision())
+			{
+				position.y += movement;
+			}
+
 		}
 		if (state[SDL_SCANCODE_DOWN]) {
-			position.y += speed * delta;
+			position.y += movement;
+			if (checkCollision())
+			{
+				position.y -= movement;
+			}
 		}
 		if (state[SDL_SCANCODE_RIGHT]) {
-			position.x += speed * delta;
+			position.x += movement;
 			sprite->setHorizontalFlip(false);
+			if (checkCollision())
+			{
+				position.x -= movement;
+			}
 		}
 		if (state[SDL_SCANCODE_LEFT]) {
-			position.x -= speed * delta;
+			position.x -= movement;
 			sprite->setHorizontalFlip(true);
+			if (checkCollision())
+			{
+				position.x += movement;
+			}
 		}
 		if (SDL_GetMouseState(NULL, NULL) & SDL_BUTTON_LMASK && t > threshold)
 		{
@@ -115,7 +135,6 @@ void Player::checkInput(int delta)
 			{
 				expression_string += key;
 			}
-			//expression_string += instance->event.text.text;
 			SDL_Delay(200);
 		}
 		
@@ -134,7 +153,6 @@ void Player::render()
 	rec->w = TextureLoader::width;
 	rec->h = TextureLoader::height;
 	calculateFunction();
-	SDL_RenderCopy(instance->renderer, text, NULL, rec);
 }
 
 void Player::calculateFunction()
@@ -146,7 +164,6 @@ void Player::calculateFunction()
 	typedef exprtk::symbol_table<double> symbol_table_t;
 	typedef exprtk::expression<double>     expression_t;
 	typedef exprtk::parser<double>             parser_t;
-	//expression_string = "sin(x)";//"x^2-2x";//"sin(2*x)-2*sin(x)";//////"1/1000*x^2";//
 
 	double x = 1;
 
@@ -203,4 +220,19 @@ void Player::calculateFunction()
 	}
 
 
+}
+
+bool Player::checkCollision()
+{
+	auto collideobjects = collision();
+
+	for (int i = 0; i < collideobjects.size(); i++)
+	{
+		if (collideobjects[i]->type == "Laserbarrier")
+		{
+			return true;
+			Laserbarrier* lb = (Laserbarrier*)collideobjects[i];
+		}
+	}
+	return false;
 }

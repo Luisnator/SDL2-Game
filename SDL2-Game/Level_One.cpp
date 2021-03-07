@@ -3,6 +3,10 @@
 Level_One::Level_One(Game* instance):Level(instance)
 {
 	createGameobject(new Background("../assets/urban-landscape-background.png", instance));
+	createGameobject(new Laserbarrier({ 500,100,20,2000}, instance));
+	createGameobject(new Laserbarrier({ 0,100,500,20 }, instance));
+	createGameobject(new Laserbarrier({ 0,instance->window_h+20,500,20 },instance));
+	createGameobject(new Laserbarrier({ -20,100,20,2000 }, instance));
 	createGameobject(new Player(instance));
 	createGameobject(new Enemy({ 700,500,100,100 }, instance));
 	createGameobject(new Wall({ 700,600,100,1000 }, instance));
@@ -16,4 +20,25 @@ Level_One::Level_One(Game* instance):Level(instance)
 
 Level_One::~Level_One()
 {
+
 }
+
+void Level_One::update(int delta)
+{
+	SDL_PollEvent(&instance->event);
+	const Uint8* state = SDL_GetKeyboardState(NULL);
+	if (state[SDL_SCANCODE_R]) {
+		std::cout << "Test" << std::endl;
+		Level_One* lo = new Level_One(instance);
+		instance->unregisterGameobject(this);
+		instance->registerGameobject(lo);
+		SDL_Delay(200);
+		delete this;
+	}
+
+}
+
+void Level_One::render()
+{
+}
+

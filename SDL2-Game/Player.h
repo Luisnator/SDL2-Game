@@ -4,15 +4,15 @@
 #include <iostream>
 #include "Sprite.h"
 #include "SDL_mixer.h"
+#include "Laserbarrier.h"
+#include "TextRender.h"
 
 class Player :
     public Gameobject
 {
 public:
     Sprite* sprite;
-    SDL_Texture* text;
-
-    SDL_Rect position = {200,500,100,100};
+    TextRender* tr;
 
     int delta = 0;
     float speed = 0.3;
@@ -32,6 +32,7 @@ public:
     void checkInput(int delta);
     void render();
     void calculateFunction();
+    bool checkCollision();
 
 };
 

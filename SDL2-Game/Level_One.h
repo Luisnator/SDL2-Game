@@ -7,6 +7,7 @@ public:
     Level_One(Game* instance);
     ~Level_One();
 
-
+    void update(int delta);
+    void render();
 };
 

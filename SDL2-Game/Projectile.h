@@ -19,7 +19,6 @@ public:
 	double x = 0;
 	float angle = 0;
 	SDL_Rect start_position = { 0,0,0,0 };
-	SDL_Rect current_position = { 0,0,0,0 };
 	int t = 0;
 
 	void update(int delta);

@@ -12,7 +12,6 @@ public:
     ~Enemy();
 
     Sprite* sprite;
-    SDL_Rect position = {0,0,100,100};
     Mix_Chunk* m_screech;
 
     bool dead = false;

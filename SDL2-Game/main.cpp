@@ -13,6 +13,7 @@ int main(int argc, char* argv[])
 	int tickstart = SDL_GetTicks();
 	int tickend = SDL_GetTicks();
 	Level_One* lvl1 = new Level_One(game);
+	game->registerGameobject(lvl1);
 	while (game->isRunning)
 	{
 		int delta = tickend - tickstart;

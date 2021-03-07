@@ -3,6 +3,8 @@
 #include "Game.h"
 #include <string>
 #include <typeinfo>
+#include <vector>
+#include <algorithm>
 class Gameobject
 {
 public:
@@ -11,6 +13,11 @@ public:
 
 	Game* instance;
 	std::string type;
+
+	SDL_Rect position = {0,0,0,0};
+
 	virtual void update(int delta);
 	virtual void render();
+
+	std::vector<Gameobject*> collision();
 };
