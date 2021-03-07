@@ -3,7 +3,7 @@
 Projectile::Projectile(SDL_Rect position, float angle, std::string expression, Game* instance) : Gameobject(instance)
 {
 	instance->registerGameobject(this);
-	sprite = new Sprite("../assets/PlasmaProjectile_a.png",2, 11, 11, 200, instance);
+	sprite = new Sprite("../assets/PlasmaProjectile_a.png", 2, {0,0,11,11}, 200, instance);
 	sprite->setSize(position.w, position.h);
 	instance->registerGameobject(sprite);
 	start_position = position;
@@ -63,8 +63,8 @@ void Projectile::calculateFunction(int delta)
 	float xnew = x * 100 * c - y * s;
 	float ynew = x * 100 * s + y * c;
 
-	position.x = xnew + start_position.x - sprite->dimension->w/2;
-	position.y = ynew + start_position.y - sprite->dimension->h/2;
+	position.x = xnew + start_position.x - sprite->position.w/2;
+	position.y = ynew + start_position.y - sprite->position.h/2;
 }
 
 void Projectile::checkCollision()

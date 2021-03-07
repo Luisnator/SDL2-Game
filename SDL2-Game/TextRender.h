@@ -20,10 +20,12 @@ public:
     int height = 0;
     int width = 0;
     bool change = false;
+    bool visible = true;
 
     void setColor(SDL_Color c);
     void setSize(int size);
     void setPosition(SDL_Rect position);
     void setText(std::string text);
+    void setVisible(bool visible);
 };
 

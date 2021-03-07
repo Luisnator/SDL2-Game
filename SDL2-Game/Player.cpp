@@ -6,14 +6,20 @@
 Player::Player(Game* instance) : Gameobject(instance)
 {
 	position = { 200,500,100,100 };
-	sprite = new Sprite("../assets/Robot_with_jetpack.png", 4, 16, 16, 200, instance);
+	sprite = new Sprite("../assets/Robot_with_jetpack.png", 4, {0,0,16,16}, 200, instance);
 	instance->registerGameobject(sprite);
 	sprite->setSize(position.w, position.h);
 
 	plasmaShot = Mix_LoadWAV("../assets/PlasmaShot.mp3");
 
-	tr = new TextRender({ 50,50,0,0 }, "0", 28, { 0,0,0,0 }, instance);
-	instance->registerGameobject(tr);
+	tr_equation = new TextRender({ 50,50,0,0 }, "0", 28, { 0,0,0,0 }, instance);
+	tr_shots = new TextRender({ 1250, 50, 0, 0 }, "Shots:", 28, { 0,0,0,0 }, instance);
+	tr_resetAdvice = new TextRender({ 1500,50,0,0 }, "Press R to Reset", 28, { 0,0,0,0 }, instance);
+
+	instance->registerGameobject(tr_shots);
+	instance->registerGameobject(tr_equation);
+	instance->registerGameobject(tr_resetAdvice);
+
 
 	type = "Player";
 }
@@ -21,10 +27,14 @@ Player::Player(Game* instance) : Gameobject(instance)
 Player::~Player()
 {
 	instance->unregisterGameobject(sprite);
-	instance->unregisterGameobject(tr);
+	instance->unregisterGameobject(tr_equation);
+	instance->unregisterGameobject(tr_shots);
+	instance->unregisterGameobject(tr_resetAdvice);
 	Mix_FreeChunk(plasmaShot);
 	delete sprite;
-	delete tr;
+	delete tr_equation;
+	delete tr_shots;
+	delete tr_resetAdvice;
 }
 
 void Player::update(int delta)
@@ -49,8 +59,9 @@ void Player::update(int delta)
 	}
 	std::string renderText;
 	renderText = "Smart Gun Equation:  " + expression_string + appendix;
-	tr->setColor(c);
-	tr->setText(renderText);
+	tr_equation->setColor(c);
+	tr_equation->setText(renderText);
+	tr_shots->setText("Shots: " + std::to_string(shots));
 }
 
 void Player::checkInput(int delta)
@@ -101,6 +112,7 @@ void Player::checkInput(int delta)
 			SDL_Rect corrected_pos = { position.x + position.w ,position.y + position.h / 2,25,25 };
 			Projectile* p = new Projectile(corrected_pos, cur_angle, expression_string, instance);
 			t = 0;
+			shots++;
 		}
 		if (state[SDL_SCANCODE_F])
 		{

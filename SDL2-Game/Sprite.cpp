@@ -1,6 +1,6 @@
 #include "Sprite.h"
 
-Sprite::Sprite(std::string file, int frames, int width, int height,int speed, Game* instance) : Gameobject(instance)
+Sprite::Sprite(std::string file, int frames, SDL_Rect position,int speed, Game* instance) : Gameobject(instance)
 {
 	sourceTexture = TextureLoader::loadTextureFromImage(file,instance->renderer);
 	this->frames = frames;
@@ -8,23 +8,18 @@ Sprite::Sprite(std::string file, int frames, int width, int height,int speed, Ga
 	for (int i = 0; i < frames; i++)
 	{
 		SDL_Rect* spriteFrame = new SDL_Rect;
-		spriteFrame->x = i * width;
+		spriteFrame->x = i * position.w;
 		spriteFrame->y = 0;
-		spriteFrame->w = width;
-		spriteFrame->h = height;
+		spriteFrame->w = position.w;
+		spriteFrame->h = position.h;
 		spriteClips.push_back(spriteFrame);
 	}
-	dimension = new SDL_Rect;
-	dimension->x = 0;
-	dimension->y = 0;
-	dimension->w = width;
-	dimension->h = height;
+	this->position = position;
 	type = "Sprite";
 }
 Sprite::~Sprite()
 {
 	instance->unregisterGameobject(this);
-	delete dimension;
 	for (int i = 0; i < spriteClips.size(); i++)
 	{
 		delete spriteClips[i];
@@ -50,21 +45,21 @@ void Sprite::update(int delta)
 }
 void Sprite::setSize(int width, int height)
 {
-	dimension->w = width;
-	dimension->h = height;
+	position.w = width;
+	position.h = height;
 }
 
 void Sprite::setPosition(int x, int y)
 {
-	dimension->x = x;
-	dimension->y = y;
+	position.x = x;
+	position.y = y;
 }
 
 void Sprite::render()
 {
 	if (visible)
 	{
-		SDL_RenderCopyEx(instance->renderer,sourceTexture,getActiveClip(), dimension, NULL, NULL, flip);
+		SDL_RenderCopyEx(instance->renderer,sourceTexture,getActiveClip(), &position, NULL, NULL, flip);
 	}
 }
 

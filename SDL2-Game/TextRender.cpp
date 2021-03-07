@@ -6,6 +6,10 @@ TextRender::TextRender(SDL_Rect position,std::string text,int size ,SDL_Color c,
 	this->font_size = size;
 	this->text = text;
 	this->position = position;
+
+	tex = TextureLoader::loadTextureFromText(this->text, this->c, font_size, instance->renderer);
+	this->position.h = TextureLoader::height;
+	this->position.w = TextureLoader::width;
 }
 
 TextRender::~TextRender()
@@ -27,7 +31,10 @@ void TextRender::update(int delta)
 
 void TextRender::render()
 {
-	SDL_RenderCopy(instance->renderer, tex, NULL, &position);
+	if (visible)
+	{
+		SDL_RenderCopy(instance->renderer, tex, NULL, &position);
+	}
 }
 
 void TextRender::setColor(SDL_Color c)
@@ -59,4 +66,9 @@ void TextRender::setText(std::string text)
 		this->text = text;
 		change = true;
 	}
+}
+
+void TextRender::setVisible(bool visible)
+{
+	this->visible = visible;
 }

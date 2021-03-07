@@ -2,7 +2,7 @@
 
 Enemy::Enemy(SDL_Rect position,Game* instance): Gameobject(instance)
 {
-	sprite = new Sprite("../assets/Alien_a.png", 2, 16, 16, 300, instance);
+	sprite = new Sprite("../assets/Alien_a.png", 2, {0,0,16,16}, 300, instance);
 	instance->registerGameobject(sprite);
 	sprite->setSize(position.w, position.h);
 	sprite->setPosition(position.x, position.y);

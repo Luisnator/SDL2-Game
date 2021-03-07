@@ -12,11 +12,14 @@ class Player :
 {
 public:
     Sprite* sprite;
-    TextRender* tr;
+    TextRender* tr_equation;
+    TextRender* tr_shots;
+    TextRender* tr_resetAdvice;
 
     int delta = 0;
     float speed = 0.3;
     std::string expression_string = "0";
+    int shots = 0; 
 
     bool toggle_input = false;
 
