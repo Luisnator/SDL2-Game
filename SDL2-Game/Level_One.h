@@ -13,6 +13,8 @@ public:
 
     Player* player;
 
+    Mix_Music* m_background;
+
     TextRender* popup_text_r;
     TextRender* popup_text_c;
 

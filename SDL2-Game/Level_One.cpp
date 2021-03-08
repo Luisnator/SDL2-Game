@@ -40,13 +40,14 @@ Level_One::Level_One(Game* instance):Level(instance)
 	popup_text_c = new TextRender({ instance->window_w / 2 - 960 / 2 + 50,instance->window_h / 2 + 540 / 4,0,0 }, "Continue(Enter)", 72, { 0,0,0,0 }, instance);
 	popup_text_c->setVisible(false);
 	createGameobject(popup_text_c);
-
-
+	m_background = Mix_LoadMUS("../assets/BackgroundMusic.wav");
+	Mix_PlayMusic(m_background, -1);
+	Mix_VolumeMusic(MIX_MAX_VOLUME / 2);
 }
 
 Level_One::~Level_One()
 {
-
+	Mix_FreeMusic(m_background);
 }
 
 void Level_One::update(int delta)
