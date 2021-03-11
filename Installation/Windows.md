@@ -14,7 +14,7 @@ Ein Visual Studio Projekt erstellen.
 DLL Dateien aus dem SDL2 Ordner in das Projektverzeichnis kopieren.
 ![](../images/SDL2DLL.PNG)
 
-Include-Pfad von SDL2 hinzufügen. Properties -> C/C++ -> Additional Include Directories 
+Include-Pfad von SDL2 hinzufügen. Properties -> C/C++ -> General -> Additional Include Directories 
 ![](../images/Include.PNG)
 
 Bibliothek-Pfad von SDL2 einbinden. Properties -> Linker -> General -> Additional Library Directories
