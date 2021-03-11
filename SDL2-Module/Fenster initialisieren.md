@@ -7,6 +7,6 @@ nav_order: 1
 
 # Fenster in SDL2 initialisieren
 
-```C++
+```cpp
 std::cout << "Placeholder" << std::endl;
 ```
