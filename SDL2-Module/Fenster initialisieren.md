@@ -104,11 +104,15 @@ int main(int argc, char* argv[])
 ```
 In der main Funktion wird das Game-Objekt erstellt und anschließend wird die Spielschleife gestartet.
 
-# Dokumentation zu den hier verwendeten SDL2 Funktionen
+## Dokumentation zu den hier verwendeten SDL2 Funktionen
+
 
 [SDL_Init](https://wiki.libsdl.org/SDL_Init)
+
 [SDL_CreateWindow](https://wiki.libsdl.org/SDL_CreateWindow)
+
 [SDL_DestroyWindow](https://wiki.libsdl.org/SDL_DestroyWindow)
+
 [SDL_Quit](https://wiki.libsdl.org/SDL_Quit)
 
 

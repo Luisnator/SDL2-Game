@@ -127,12 +127,19 @@ Beim Ausführen sollte in dem Fenster ein rotes Rechteck zu sehen sein.
 Dieses letzte Beispiel sollte nur zu Testzwecken verwendet werden.
 
 
-# Dokumentation zu den hier verwendeten SDL2 Funktionen
+## Dokumentation zu den hier verwendeten SDL2 Funktionen
+
 
 [SDL_CreateRenderer](https://wiki.libsdl.org/SDL_CreateRenderer)
+
 [SDL_SetRenderDrawColor](https://wiki.libsdl.org/SDL_SetRenderDrawColor)
+
 [SDL_DestroyRenderer](https://wiki.libsdl.org/SDL_DestroyRenderer)
+
 [SDL_Render_Clear](https://wiki.libsdl.org/SDL_RenderClear)
+
 [SDL_RenderPresent](https://wiki.libsdl.org/SDL_RenderPresent)
+
 [SDL_RenderFillRect](https://wiki.libsdl.org/SDL_RenderFillRect)
+
 
