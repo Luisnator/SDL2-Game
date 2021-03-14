@@ -29,7 +29,7 @@ public:
 ```
 Die alle Klassen die von Gameobject erben, sollen eine Referenz zu dem ihnen zugehörigen Spiel haben, weshalb die Klasse eine Referenz zu der Klasse Game besitzt.
 Der Destruktor ist mit virtual gekennzeichnet, da später Objekte über die Gameobject-Referenz gelöscht werden und dennoch der Destruktor der Kind-Klasse aufgerufen werden soll.
-In den String type wird von den Kindklassen ihr Klassenname eingetragen, um später Zugehörigkeiten erkennen zu können. In diesem Spiel sind alle Objekte Rechtecke, weshalb die Position und Maße mit
+In den String type wird von den Kind-Klassen ihr Klassenname eingetragen, um später Zugehörigkeiten erkennen zu können. In diesem Spiel sind alle Objekte Rechtecke, weshalb die Position und Maße mit
  einem SDL_Rect-Objekt names position festgehalten wird. Die Funktionen update und render sollen später jeweils einmal pro Bildwiederholung aufgerufen werden. Da auch diese Funktionen über die Gameobject-Referenz
  aufgerufen werden, müssen diese mit virtual gekennzeichnet sein. In den Parameter delta der Funktion update wird später die Zeit übergeben, die seit der letzten Bildwiederholung vergangen ist.
  In der Funktion update sollen alle logischen Operationen die nichts direkt mit dem Darstellen des Bildes zu tun haben getätigt werden. 
