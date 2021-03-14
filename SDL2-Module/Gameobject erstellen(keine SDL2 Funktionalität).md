@@ -1,6 +1,6 @@
 ---
 layout: default
-title: Gameobject erstellen
+title: Gameobject erstellen(keine SDL2 Funktionalität)
 parent: SDL2-Module
 nav_order: 4
 ---
