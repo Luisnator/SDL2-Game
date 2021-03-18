@@ -24,6 +24,6 @@ int main(int argc, char* argv[])
 		tickend = SDL_GetTicks();
 	}
 	game->clean();
-	
+	delete game;
 	return 0;
 }

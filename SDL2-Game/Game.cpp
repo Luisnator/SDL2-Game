@@ -12,6 +12,13 @@ Game::Game()
 
 Game::~Game()
 {
+	for (int i = 0; i < gameobjects.size(); i++)
+	{
+		if (gameobjects[i]->type == "Level")
+		{
+			delete gameobjects[i];
+		}
+	}
 }
 
 void Game::init(std::string title, int xpos, int ypos, int width, int height, int flags)
@@ -62,10 +69,6 @@ void Game::handleEvents()
 
 void Game::update(int delta)
 {
-	//for (auto & value : gameobjects)
-	//{
-	//	value->update(delta);
-	//}
 	for (int i = 0; i < gameobjects.size(); i++)
 	{
 		gameobjects[i]->update(delta);
