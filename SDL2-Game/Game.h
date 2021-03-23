@@ -20,11 +20,11 @@ public:
 	void unregisterGameobject(Gameobject* go);
 	std::vector<Gameobject*> getGameobjects();
 
-	SDL_Window* window;
-	SDL_Renderer* renderer;
+	SDL_Window* window = nullptr;
+	SDL_Renderer* renderer = nullptr;
 	std::vector<Gameobject*> gameobjects;
 	SDL_Event event;
-	bool isRunning;
+	bool loop = true;
 
 	int window_w = 0;
 	int window_h = 0;

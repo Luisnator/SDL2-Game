@@ -5,9 +5,6 @@
 #include "SDL_ttf.h"
 Game::Game()
 {
-	isRunning = false;
-	renderer = nullptr;
-	window = nullptr;
 }
 
 Game::~Game()
@@ -25,33 +22,32 @@ void Game::init(std::string title, int xpos, int ypos, int width, int height, in
 {
 	window_w = width;
 	window_h = height;
-	if (SDL_Init(SDL_INIT_EVERYTHING) == 0)
+	if (!SDL_Init(SDL_INIT_EVERYTHING) == 0)
 	{
-		std::cout << "Subsystems Initialised" << std::endl;
-		window = SDL_CreateWindow(title.c_str(), xpos, ypos, width, height, flags);
-		if (window)
-		{
-			std::cout << "Window created" << std::endl;
-		}
-		renderer = SDL_CreateRenderer(window, -1, 0);
-		if (renderer)
-		{
-			SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
-			std::cout << "Renderer created" << std::endl;
-		}
-		if (Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 2048) < 0)
-		{
-			printf("SDL_mixer could not initialize! SDL_mixer Error: %s\n", Mix_GetError());
-		}
-		if (TTF_Init() == -1)
-		{
-			printf("SDL_ttf could not initialize! SDL_ttf Error: %s\n", TTF_GetError());
-		}
-		isRunning = true;
+		std::cout << "SDL_Subsystem crash" << std::endl;
+		exit(0);
 	}
-	else
+	window = SDL_CreateWindow(title.c_str(), xpos, ypos, width, height, flags);
+	if (!window)
 	{
-		isRunning = false;
+		std::cout << "Window crash" << std::endl;
+		exit(0);
+	}
+	renderer = SDL_CreateRenderer(window, -1, 0);
+	if (!renderer)
+	{
+		std::cout << "Renderer crash" << std::endl;
+		exit(0);
+	}
+	if (!Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 2048) == 0)
+	{
+		std::cout << "Mix crash" << std::endl;
+		exit(0);
+	}
+	if (!TTF_Init() == 0)
+	{
+		std::cout << "TTF crash" << std::endl;
+		exit(0);
 	}
 }
 
@@ -60,7 +56,7 @@ void Game::handleEvents()
 	SDL_PollEvent(&event);
 	switch (event.type) {
 	case SDL_QUIT:
-		isRunning = false;
+		loop = false;
 		break;
 	default:
 		break;
@@ -93,7 +89,6 @@ void Game::clean()
 	TTF_Quit();
 	IMG_Quit();
 	SDL_Quit();
-	std::cout << "bye" << std::endl;
 }
 
 void Game::registerGameobject(Gameobject* go)

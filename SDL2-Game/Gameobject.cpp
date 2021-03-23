@@ -23,42 +23,24 @@ std::vector<Gameobject*> Gameobject::collision()
 	for (int i = 0; i < gameobjects.size(); i++)
 	{
 		Gameobject* go = gameobjects[i];
-		//The sides of the rectangles
-		int leftA, leftB;
-		int rightA, rightB;
-		int topA, topB;
-		int bottomA, bottomB;
-
-		//Calculate the sides of rect A
-		leftA = go->position.x;
-		rightA = go->position.x + go->position.w;
-		topA = go->position.y;
-		bottomA = go->position.y + go->position.h;
-
-		//Calculate the sides of rect B
-		leftB = position.x;
-		rightB = position.x + position.w;
-		topB = position.y;
-		bottomB = position.y + position.h;
-
 		bool collide = true;
-		//If any of the sides from A are outside of B
-		if (bottomA <= topB)
+
+		if (go->position.y + go->position.h <= position.y)
 		{
 			collide = false;
 		}
 
-		if (topA >= bottomB)
+		if (go->position.y >= position.y + position.h)
 		{
 			collide = false;
 		}
 
-		if (rightA <= leftB)
+		if (go->position.x + go->position.w <= position.x)
 		{
 			collide = false;
 		}
 
-		if (leftA >= rightB)
+		if (go->position.x >= position.x + position.w)
 		{
 			collide = false;
 		}
