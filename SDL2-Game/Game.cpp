@@ -91,6 +91,21 @@ void Game::clean()
 	SDL_Quit();
 }
 
+void Game::GameLoop()
+{
+	int tickstart = SDL_GetTicks();
+	int tickend = SDL_GetTicks();
+	while (loop)
+	{
+		int delta = tickend - tickstart;
+		handleEvents();
+		tickstart = SDL_GetTicks();
+		update(delta);
+		render();
+		tickend = SDL_GetTicks();
+	}
+}
+
 void Game::registerGameobject(Gameobject* go)
 {
 	gameobjects.push_back(go);

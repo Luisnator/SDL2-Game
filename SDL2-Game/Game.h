@@ -16,6 +16,7 @@ public:
 	void update(int delta);
 	void render();
 	void clean();
+	void GameLoop();
 	void registerGameobject(Gameobject* go);
 	void unregisterGameobject(Gameobject* go);
 	std::vector<Gameobject*> getGameobjects();
