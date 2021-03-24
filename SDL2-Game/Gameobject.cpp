@@ -25,26 +25,13 @@ std::vector<Gameobject*> Gameobject::collision()
 		Gameobject* go = gameobjects[i];
 		bool collide = true;
 
-		if (go->position.y + go->position.h <= position.y)
+		if ((go->position.y + go->position.h <= position.y) || 
+			(go->position.y >= position.y + position.h) || 
+			(go->position.x + go->position.w <= position.x) || 
+			(go->position.x >= position.x + position.w))
 		{
 			collide = false;
 		}
-
-		if (go->position.y >= position.y + position.h)
-		{
-			collide = false;
-		}
-
-		if (go->position.x + go->position.w <= position.x)
-		{
-			collide = false;
-		}
-
-		if (go->position.x >= position.x + position.w)
-		{
-			collide = false;
-		}
-
 		if (collide == true)
 		{
 			collidedObjects.push_back(go);
