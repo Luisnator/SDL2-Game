@@ -209,6 +209,22 @@ void Sprite::setHorizontalFlip(bool flip)
 ```
 Hier nochmal die gesamte Implementation.
 
+```cpp
+//main.cpp
+int main(int argc, char* argv[])
+{
+	Game *game = new Game();
+	game->init("Cooles Spiel", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 1920, 1080, SDL_WINDOW_SHOWN);
+	game->registerGameobject(new Background("../assets/urban-landscape-background.png", instance));
+	game->registerGameobject(new Sprite("../assets/Robot_with_jetpack.png", 4, {0,0,16,16}, 200, instance));
+	game->GameLoop();
+	game->clean();
+	
+	return 0;
+}
+```
+Genau wie der Hintergrund lässt sich auch der Sprite dem Spiel hinzufügen.
+
 ## Dokumentation zu den hier verwendeten SDL2 Funktionen
 
 [SDL_RenderCopyEx](https://wiki.libsdl.org/SDL_RenderCopyEx)

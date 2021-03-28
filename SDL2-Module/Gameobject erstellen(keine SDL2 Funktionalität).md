@@ -62,6 +62,7 @@ public:
 	Game();
 	~Game();
 	void init(std::string title, int xpos, int ypos, int width, int height, int flags);
+	void GameLoop();
 	void handleEvents();
 	void update(int delta); // <-- neu
 	void render();
@@ -74,7 +75,7 @@ public:
 	SDL_Renderer* renderer;
 	std::vector<Gameobject*> gameobjects; // <-- neu
 	SDL_Event event;
-	bool isRunning;
+	bool loop;
 
 	int window_w = 0;
 	int window_h = 0;
@@ -140,21 +141,16 @@ void Game::unregisterGameobject(Gameobject* go)
 Die Funktion unregisterGameobject probiert das per Parameter übergebene Objekt in der Gameobject-Liste zu finden und dann rauszulöschen. 
 
 ```cpp
-//main.cpp
-int main(int argc, char* argv[])
+//Game.cpp
+void Game::GameLoop()
 {
-	Game *game = new Game();
-	game->init("Cooles Spiel", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 1920, 1080, SDL_WINDOW_SHOWN);
-	while (game->isRunning)
+	while (loop)
 	{
-		game->handleEvents();
-		game->update(0); // <-- neu
-		game->render();
+		handleEvents();
+		update(0);
+		render();
 	}
-	game->clean();
-	
-	return 0;
 }
 ```
 Im letzten Schritt wird die Funktion update auch in der Spielschleife aufgerufen, damit jedes Gameobject-Objekt pro Bildwiederholung etwas tun kann.
-Die Funktion update erhält Platzhalterweise den Wert 0 für den Parameter delta.
+Die Funktion update erhält als Platzhalter den Wert 0 für den Parameter delta.

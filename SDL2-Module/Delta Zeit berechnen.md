@@ -10,26 +10,20 @@ nav_order: 6
 Die Delta Zeit die berechnet wird stellt hier die Zeit zwischen den Aufrufen der Funktion update dar.
 
 ```cpp
-//main.cpp
-int main(int argc, char* argv[])
+//Game.cpp
+void Game::GameLoop()
 {
-	Game *game = new Game();
-	game->init("Cooles Spiel", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 1920, 1080, SDL_WINDOW_SHOWN);
-	int tickstart = SDL_GetTicks(); // <-- neu
-	int tickend = SDL_GetTicks(); // <-- neu
-	game->registerGameobbject(new Background("../assets/urban-landscape-background.png", instance));
-	while (game->isRunning)
+	int tickstart = SDL_GetTicks(); 		// <-- neu
+	int tickend = SDL_GetTicks();			// <-- neu
+	while (loop)
 	{
-		int delta = tickend - tickstart; // <-- neu
-		game->handleEvents();
-		tickstart = SDL_GetTicks(); // <-- neu
-		game->update(delta); // <-- angepasst
-		game->render();
-		tickend = SDL_GetTicks(); // <-- neu
+		int delta = tickend - tickstart;	// <-- neu
+		handleEvents();
+		tickstart = SDL_GetTicks();			// <-- neu
+		update(delta);						// <-- angepasst
+		render();
+		tickend = SDL_GetTicks();			// <-- neu
 	}
-	game->clean();
-	
-	return 0;
 }
 ```
 Die Funktion SDL_GetTicks gibt die Anzahl an Millisekunden zurück die seit der Initalisierung von SDL2 vergangen sind.

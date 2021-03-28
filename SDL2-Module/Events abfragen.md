@@ -17,6 +17,7 @@ public:
 	Game();
 	~Game();
 	void init(std::string title, int xpos, int ypos, int width, int height, int flags);
+	void GameLoop();
 	void render();
 	void clean();
 	void handleEvents(); // <-- neu
@@ -24,7 +25,7 @@ public:
 	SDL_Window* window;
 	SDL_Renderer* renderer;
     SDL_Event event; // <-- neu
-	bool isRunning;
+	bool loop;
 
 	int window_w = 0;
 	int window_h = 0;
@@ -39,9 +40,10 @@ In die Variable event wird später das abgefragte Event gespeichert.
 void Game::handleEvents()
 {
 	SDL_PollEvent(&event);
-	switch (event.type) {
+	switch (event.type) 
+	{
 	case SDL_QUIT:
-		isRunning = false;
+		loop = false;
 		break;
 	default:
 		break;
@@ -50,23 +52,18 @@ void Game::handleEvents()
 ```
 
 Mit SDL_PollEvent können die aktuellen Events abgefragt werden. Anschließend kann man das Event Objekt auslesen. In diesem Fall wird überprüft, ob das Event SDL_QUIT ausgelöst wurde.
-Das Event SDL_QUIT wird bei dem Schließen des Fensters ausgelöst. In diesem Fall wird der Boolean isRunning auf false gesetzt, was zur Folge hat, dass das ganze Programm beendet wird.
+Das Event SDL_QUIT wird bei dem Schließen des Fensters ausgelöst. In diesem Fall wird der Boolean loop auf false gesetzt, was zur Folge hat, dass das ganze Programm beendet wird.
 Für die unterschiedlichen Eventtypen kann [hier](https://wiki.libsdl.org/SDL_EventType) nachgeschaut werden.
 
 ```cpp
-//main.cpp
-int main(int argc, char* argv[])
+//Game.cpp
+void Game::GameLoop()
 {
-	Game *game = new Game();
-	game->init("Cooles Spiel", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 1920, 1080, SDL_WINDOW_SHOWN);
-	while (game->isRunning)
+	while (loop)
 	{
-		game->handleEvents();  // <-- neu
-		game->render();
+		handleEvents();
+		render();
 	}
-	game->clean();
-	
-	return 0;
 }
 ```
 Es soll mit jedem Schleifendurchlauf nach neuen Events geguckt werden.

@@ -17,12 +17,13 @@ public:
 	Game();
 	~Game();
 	void init(std::string title, int xpos, int ypos, int width, int height, int flags);
+	void GameLoop();
 	void render(); // <-- neu
 	void clean();
 
 	SDL_Window* window;
 	SDL_Renderer* renderer; // <-- neu
-	bool isRunning;
+	bool loop;
 
 	int window_w = 0;
 	int window_h = 0;
@@ -39,25 +40,22 @@ void Game::init(std::string title, int xpos, int ypos, int width, int height, in
 {
 	window_w = width;
 	window_h = height;
-	if (SDL_Init(SDL_INIT_EVERYTHING) == 0)
+	if (!(SDL_Init(SDL_INIT_EVERYTHING) == 0))
 	{
-		std::cout << "Subsystems Initialised" << std::endl;
-		window = SDL_CreateWindow(title.c_str(), xpos, ypos, width, height, flags);
-		if (window)
-		{
-			std::cout << "Window created" << std::endl;
-		}
-		renderer = SDL_CreateRenderer(window, -1, 0);				// <-- neu
-		if (renderer)												// <-- neu
-		{															// <-- neu
-			SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);	// <-- neu
-			std::cout << "Renderer created" << std::endl;			// <-- neu
-		}															// <-- neu
-		isRunning = true;
+		std::cout << "SDL_Subsystem crash" << std::endl;
+		exit(0);
 	}
-	else
+	window = SDL_CreateWindow(title.c_str(), xpos, ypos, width, height, flags);
+	if (!window)
 	{
-		isRunning = false;
+		std::cout << "Window crash" << std::endl;
+		exit(0);
+	}
+	renderer = SDL_CreateRenderer(window, -1, 0);
+	if (!renderer)
+	{
+		std::cout << "Renderer crash" << std::endl;
+		exit(0);
 	}
 }
 ```
@@ -73,7 +71,6 @@ void Game::clean()
 	SDL_DestroyWindow(window);
 	SDL_DestroyRenderer(renderer); // <-- neu
 	SDL_Quit();
-	std::cout << "bye" << std::endl;
 }
 ```
 Auch der Renderer muss beim dem Beenden zerstört werden.
@@ -93,18 +90,13 @@ Weitere Renderfunktionen die im späteren Verlauf gezeigt werden, erstellen ein 
 Mit SDL_RenderPresent werden diese Informationen aus dem Buffer ausgelesen und auf dem Fenster dargestellt. Aus diesem Grund sollte SDL_RenderPresent nur einmal pro Bildwiederholung und immer als letztes aufgerufen werden.
 
 ```cpp
-//main.cpp
-int main(int argc, char* argv[])
+//Game.cpp
+void Game::GameLoop()
 {
-	Game *game = new Game();
-	game->init("Cooles Spiel", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 1920, 1080, SDL_WINDOW_SHOWN);
-	while (game->isRunning)
+	while (loop)
 	{
-		game->render(); // <-- neu
+		render();
 	}
-	game->clean();
-	
-	return 0;
 }
 ```
 In der Spielschleife wird jetzt die Funktion render einmal pro Schleifendurchlauf aufgerufen. Anders lässt sich auch sagen, dass pro Schleifendurchlauf ein Bild dargestellt wird.

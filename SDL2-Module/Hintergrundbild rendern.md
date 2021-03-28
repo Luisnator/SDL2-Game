@@ -28,23 +28,23 @@ Weitere Flags lassen sich [hier](https://www.libsdl.org/projects/SDL_image/docs/
 //TextureLoader.cpp
 SDL_Texture* TextureLoader::loadTextureFromImage(std::string path,SDL_Renderer* renderer,int flags)
 {
-    SDL_Texture* newTexture;
+    SDL_Texture* texture = nullptr;
     IMG_Init(flags);
     SDL_Surface* loadedSurface = IMG_Load(path.c_str());
     if (loadedSurface == NULL)
     {
-        printf("Unable to load image %s! SDL_image Error: %s\n", path.c_str(), IMG_GetError());
+        std::cout << "Can't load image from path: " << path << "IMG_Error: " << IMG_GetError() << std::endl;
     }
     else
     {
-        newTexture = SDL_CreateTextureFromSurface(renderer, loadedSurface);
-        if (newTexture == NULL)
+        texture = SDL_CreateTextureFromSurface(renderer, loadedSurface);
+        if (texture == NULL)
         {
-            printf("Unable to create texture from %s! SDL Error: %s\n", path.c_str(), SDL_GetError());
+            std::cout << "Cant create texture Error: " << SDL_GetError() << std::endl;
         }
         SDL_FreeSurface(loadedSurface);
     }
-    return newTexture;
+    return texture;
 }
 ```
 Mit IMG_Init wird die Unterstützung für den gewollten Dateityp gewährleistet. Anschließend wird über die Funktion IMG_Load ein SDL_Surface geladen. 
@@ -104,13 +104,8 @@ int main(int argc, char* argv[])
 {
 	Game *game = new Game();
 	game->init("Cooles Spiel", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 1920, 1080, SDL_WINDOW_SHOWN);
-	game->registerGameobbject(new Background("../assets/urban-landscape-background.png", instance)); // <-- neu
-	while (game->isRunning)
-	{
-		game->handleEvents();
-		game->update(0);
-		game->render();
-	}
+	game->registerGameobject(new Background("../assets/urban-landscape-background.png", instance)); // <-- neu
+	game->GameLoop();
 	game->clean();
 	
 	return 0;

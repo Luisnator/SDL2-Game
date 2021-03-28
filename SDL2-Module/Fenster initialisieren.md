@@ -34,7 +34,7 @@ public:
 	void clean();
 
 	SDL_Window* window;
-	bool isRunning;
+	bool loop;
 
 	int window_w = 0;
 	int window_h = 0;
@@ -49,7 +49,7 @@ Mit der Funktion clean werden beim Beenden des Programms, die SDL2 Funktionalit�
 
 In dem Pointer window wird das erstellte Fenster gespeichert.
 
-Mit dem bool isRunning wird festgehalten, ob das Spiel läuft oder beendet werden soll.
+Mit dem bool loop wird festgehalten, ob die Spielschleife läuft oder beendet werden soll.
 
 Die Integer window_w und window_h speichern die Breite und Höhe des Fensters.
 
@@ -59,19 +59,16 @@ void Game::init(std::string title, int xpos, int ypos, int width, int height, in
 {
 	window_w = width;
 	window_h = height;
-	if (SDL_Init(SDL_INIT_EVERYTHING) == 0)
+	if (!(SDL_Init(SDL_INIT_EVERYTHING) == 0))
 	{
-		std::cout << "Subsystems Initialised" << std::endl;
-		window = SDL_CreateWindow(title.c_str(), xpos, ypos, width, height, flags);
-		if (window)
-		{
-			std::cout << "Window created" << std::endl;
-		}
-		isRunning = true;
+		std::cout << "SDL_Subsystem crash" << std::endl;
+		exit(0);
 	}
-	else
+	window = SDL_CreateWindow(title.c_str(), xpos, ypos, width, height, flags);
+	if (!window)
 	{
-		isRunning = false;
+		std::cout << "Window crash" << std::endl;
+		exit(0);
 	}
 }
 ```
@@ -83,10 +80,20 @@ void Game::clean()
 {
 	SDL_DestroyWindow(window);
 	SDL_Quit();
-	std::cout << "bye" << std::endl;
 }
 ```
 In der Funktion clean sollten alle offenen Objekte zerstört und alle Systemressourcen freigegeben werden. 
+
+```cpp
+//Game.cpp
+void Game::GameLoop()
+{
+	while (loop)
+	{
+	}
+}
+```
+Die Funktion GameLoop stellt die Hauptspielschleife dar. Im späterem Verlauf wird diese Funktion an Relevanz gewinnen.
 
 ```cpp
 //main.cpp
@@ -94,11 +101,9 @@ int main(int argc, char* argv[])
 {
 	Game *game = new Game();
 	game->init("Cooles Spiel", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 1920, 1080, SDL_WINDOW_SHOWN);
-	while (game->isRunning)
-	{
-	}
+	game->Gameloop();
 	game->clean();
-	
+	delete game;
 	return 0;
 }
 ```
