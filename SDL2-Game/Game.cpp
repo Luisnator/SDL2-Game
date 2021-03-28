@@ -22,7 +22,7 @@ void Game::init(std::string title, int xpos, int ypos, int width, int height, in
 {
 	window_w = width;
 	window_h = height;
-	if (!SDL_Init(SDL_INIT_EVERYTHING) == 0)
+	if (!(SDL_Init(SDL_INIT_EVERYTHING) == 0))
 	{
 		std::cout << "SDL_Subsystem crash" << std::endl;
 		exit(0);
@@ -39,12 +39,12 @@ void Game::init(std::string title, int xpos, int ypos, int width, int height, in
 		std::cout << "Renderer crash" << std::endl;
 		exit(0);
 	}
-	if (!Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 2048) == 0)
+	if (!(Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 2048) == 0))
 	{
 		std::cout << "Mix crash" << std::endl;
 		exit(0);
 	}
-	if (!TTF_Init() == 0)
+	if (!(TTF_Init() == 0))
 	{
 		std::cout << "TTF crash" << std::endl;
 		exit(0);
