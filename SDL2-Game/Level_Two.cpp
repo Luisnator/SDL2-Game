@@ -1,25 +1,25 @@
-#include "Level_One.h"
+#include "Level_Two.h"
 
-Level_One::Level_One(Game* instance):Level(instance)
+Level_Two::Level_Two(Game* instance) :Level(instance)
 {
 	createGameobject(new Background("../assets/urban-landscape-background.png", instance));
-	createGameobject(new Laserbarrier({ 500,100,20,2000}, instance));
+	createGameobject(new Laserbarrier({ 500,100,20,2000 }, instance));
 	createGameobject(new Laserbarrier({ 0,100,500,20 }, instance));
-	createGameobject(new Laserbarrier({ 0,instance->window_h+20,500,20 },instance));
+	createGameobject(new Laserbarrier({ 0,instance->window_h + 20,500,20 }, instance));
 	createGameobject(new Laserbarrier({ -20,100,20,2000 }, instance));
 	player = new Player(instance);
 	createGameobject(player);
-	createGameobject(new Enemy({ 700,500,100,100 }, instance));
-	createGameobject(new Wall({ 700,600,100,1000 }, instance));
-	createGameobject(new Enemy({ 1000,350,100,100 }, instance));
-	createGameobject(new Wall({ 1000,450,100,1000 }, instance));
-	createGameobject(new Enemy({ 1300,500,100,100 }, instance));
-	createGameobject(new Wall({ 1300,600,100,1000 }, instance));
-	createGameobject(new Enemy({ 1600,350,100,100 }, instance));
-	createGameobject(new Wall({ 1600,450,100,1000 }, instance));
-	createGameobject(new TextRender({ 750,100,0,0 }, "You must sin to succeed", 40, { 0,0,0,0 }, instance));
+	createGameobject(new Enemy({ 600,700,100,100 }, instance));
+	createGameobject(new Wall({ 600,800,100,1000 }, instance));
+	createGameobject(new Enemy({ 850,300,100,100 }, instance));
+	createGameobject(new Wall({ 850,400,100,1000 }, instance));
+	createGameobject(new Enemy({ 1050,500,100,100 }, instance));
+	createGameobject(new Wall({ 1050,600,100,1000 }, instance));
+	createGameobject(new Enemy({ 1250,750,100,100 }, instance));
+	createGameobject(new Wall({ 1250,850,100,1000 }, instance));
+	createGameobject(new TextRender({ 750,100,0,0 }, "Listen to my heartbeat", 40, { 0,0,0,0 }, instance));
 
-	one_star = new Sprite("../assets/OneStarRating.png", 1, { instance->window_w/2-960/2,instance->window_h/2-540/2,32,18 }, 200, instance);
+	one_star = new Sprite("../assets/OneStarRating.png", 1, { instance->window_w / 2 - 960 / 2,instance->window_h / 2 - 540 / 2,32,18 }, 200, instance);
 	one_star->setSize(960, 540);
 	one_star->setVisible(false);
 	createGameobject(one_star);
@@ -45,29 +45,29 @@ Level_One::Level_One(Game* instance):Level(instance)
 	Mix_VolumeMusic(MIX_MAX_VOLUME / 2);
 }
 
-Level_One::~Level_One()
+Level_Two::~Level_Two()
 {
 	Mix_FreeMusic(m_background);
 }
 
-void Level_One::update(int delta)
+void Level_Two::update(int delta)
 {
 
 	SDL_PollEvent(&instance->event);
 	const Uint8* state = SDL_GetKeyboardState(NULL);
 	if (state[SDL_SCANCODE_R]) {
-		Level_One* lo = new Level_One(instance);
+		Level_Two* lt = new Level_Two(instance);
 		instance->unregisterGameobject(this);
-		instance->registerGameobject(lo);
+		instance->registerGameobject(lt);
 		SDL_Delay(200);
 		delete this;
 		return;
 	}
 	if (state[SDL_SCANCODE_RETURN] && allEnemiesDead())
 	{
-		Level_Two* lt = new Level_Two(instance);
+		Level_One* lo = new Level_One(instance);
 		instance->unregisterGameobject(this);
-		instance->registerGameobject(lt);
+		instance->registerGameobject(lo);
 		SDL_Delay(200);
 		delete this;
 	}
@@ -93,11 +93,11 @@ void Level_One::update(int delta)
 
 
 
-void Level_One::render()
+void Level_Two::render()
 {
 }
 
-bool Level_One::allEnemiesDead()
+bool Level_Two::allEnemiesDead()
 {
 	bool dead = true;
 	for (int i = 0; i < lvlObjects.size(); i++)
@@ -114,4 +114,3 @@ bool Level_One::allEnemiesDead()
 	}
 	return dead;
 }
-

@@ -1,12 +1,12 @@
 #pragma once
 #include "Level.h"
-#include "Level_Two.h"
-class Level_One :
+#include "Level_One.h"
+class Level_Two :
     public Level
 {
 public:
-    Level_One(Game* instance);
-    ~Level_One();
+    Level_Two(Game* instance);
+    ~Level_Two();
 
     Sprite* one_star;
     Sprite* two_star;
